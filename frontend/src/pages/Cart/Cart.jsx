@@ -51,15 +51,16 @@ const Cart = () => {
               <p>${getTotleCartAmount()}</p>
             </div>
             <hr />
+
             <div className="cart-total-detels">
-              <p>Delivery Fee</p>
-              <p>${getTotleCartAmount() === 0 ? 0 : 2}</p>
+              <p>GST (18%)</p>
+              <p>${getTotleCartAmount() === 0 ? 0 : (getTotleCartAmount() * 0.18).toFixed(2)}</p>
             </div>
             <hr />
             <div className="cart-total-detels">
               <b>Total</b>
               <b>
-                ${getTotleCartAmount() === 0 ? 0 : getTotleCartAmount() + 2}
+                ${getTotleCartAmount() === 0 ? 0 : (getTotleCartAmount() + (getTotleCartAmount() * 0.18)).toFixed(2)}
               </b>
             </div>
             <button onClick={() => navigate("/order")}>

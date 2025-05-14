@@ -1,0 +1,66 @@
+.payment-container {
+    width: 100%;
+    max-width: max(30%, 500px);
+    margin: 20px 0;
+}
+
+.payment-form {
+    padding: 20px;
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+}
+
+.payment-form .title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.stripe-element {
+    padding: 10px;
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.stripe-element:focus {
+    outline-color: tomato;
+}
+
+.payment-error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.payment-success {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.payment-button {
+    width: 100%;
+    padding: 12px;
+    background-color: tomato;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.payment-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.payment-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #666;
+}

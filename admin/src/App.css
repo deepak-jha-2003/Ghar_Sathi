@@ -1,0 +1,36 @@
+/* App.css - Main styles for admin panel */
+
+.app-content {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 60px);
+}
+
+/* Responsive styles for app layout */
+@media screen and (max-width: 768px) {
+  .app-content {
+    flex-direction: column;
+  }
+  
+  /* Adjust spacing for list component on smaller screens */
+  .list.add {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  .list.add p {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .app-content {
+    padding: 5px;
+  }
+  
+  .list.add {
+    padding: 10px;
+    margin: 5px;
+  }
+}

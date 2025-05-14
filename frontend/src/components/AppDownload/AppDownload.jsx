@@ -6,7 +6,7 @@ const AppDownload = () => {
     <div className="app-download" id="app-download">
       <p>
         For Batter Experience Download <br />
-        Tamato App
+         App
       </p>
       <div className="app-download-plateform">
         <img src={assets.play_store} alt="" />

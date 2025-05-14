@@ -21,6 +21,13 @@
     align-items: start;
     gap: 20px;
 }
+
+.footer-logo {
+    width: 120px;
+    height: 100px;
+    filter: brightness(0) invert(1);
+    margin-bottom: 10px;
+}
 .footer-content-center{
     display: flex;
     flex-direction: column;
@@ -55,6 +62,9 @@
 }
 
 @media (max-width: 1050px) {
+    .footer-logo {
+        width: 85px;
+    }
     .footer-content{
         display: flex;
         flex-direction: column;
@@ -62,5 +72,11 @@
     }
     .footer-copyright{
         text-align: center;
+    }
+}
+
+@media (max-width: 500px) {
+    .footer-logo {
+        width: 70px;
     }
 }

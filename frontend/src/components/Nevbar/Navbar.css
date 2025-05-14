@@ -5,8 +5,8 @@
     align-items: center;
 }
 .navbar .logo {
- width: 150px; 
-  
+ width: 100px; 
+ height: 80px;
 }
 .navbar-menu{
     display: flex;
@@ -56,7 +56,7 @@
 }
 @media (max-width:1050px) {
     .navbar .logo{
-        width: 140px;
+        width: 110px;
     } 
     .navbar-menu{
         gap: 20px;
@@ -74,7 +74,7 @@
 }
 @media (max-width:900px) {
     .navbar .logo{
-        width: 140px;
+        width: 100px;
     } 
     .navbar-menu{
         gap: 15px;
@@ -96,5 +96,16 @@
     .navbar-menu{
         display: none;
     }
-    
+    .navbar .logo {
+        width: 85px;
+    }
+}
+
+@media (max-width: 500px) {
+    .navbar{
+        padding: 10px 0;
+    }
+    .navbar .logo {
+        width: 70px;
+    }
 }

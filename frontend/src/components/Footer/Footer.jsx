@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="footer" id="footer">
       <div className="footer-content">
         <div className="footer-content-left">
-          <img src={assets.logo} alt="" />
+          <img src={assets.logo} alt="Logo" className="footer-logo" />
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi velit
             explicabo esse eius tempore accusantium doloribus maiores,
@@ -39,7 +39,7 @@ const Footer = () => {
       </div>
       <hr />
       <p className="footer-copyright">
-        copyright 2024 tamato.com -All Right Reserved
+        copyright 2024 .com -All Right Reserved
       </p>
     </div>
   );
