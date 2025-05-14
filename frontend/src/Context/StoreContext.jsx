@@ -6,11 +6,7 @@ const StoreContextProvider = (props) => {
   const [cartItem, setCartItem] = useState({});
 
   const addToCart = (itemId) => {
-    if (!cartItem[itemId]) {
-      setCartItem((prev) => ({ ...prev, [itemId]: 1 }));
-    } else {
-      setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-    }
+    setCartItem((prev) => ({ ...prev, [itemId]: 1 }));
   };
 
   const removeFromCart = (itemId) => {
