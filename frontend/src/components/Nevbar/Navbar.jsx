@@ -13,13 +13,22 @@ const Navbar = ({ setShowLogin }) => {
         <img src={assets.logo} alt="" className="logo" />
       </Link>
       <ul className="navbar-menu">
-        <Link
-          to="/"
-          onClick={() => setMenu("home")}
-          className={menu === "home" ? "active" : ""}
-        >
-          home
-        </Link>
+        <div className="dropdown">
+          <Link
+            to="/"
+            onClick={() => setMenu("home")}
+            className={`${menu === "home" ? "active" : ""} dropdown-trigger`}
+          >
+            home
+          </Link>
+          <div className="dropdown-content">
+            <Link to="/service/cleaning">House Cleaning</Link>
+            <Link to="/service/plumbing">Plumbing</Link>
+            <Link to="/service/electrical">Electrical</Link>
+            <Link to="/service/painting">Painting</Link>
+            <Link to="/service/carpentry">Carpentry</Link>
+          </div>
+        </div>
         <a
           href="#explore-menu"
           onClick={() => setMenu("menu")}
