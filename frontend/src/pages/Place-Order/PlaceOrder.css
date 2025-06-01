@@ -1,35 +1,233 @@
-.place-order{
+/* frontend/src/pages/Place-Order/PlaceOrder.css */
+.place-order {
     display: flex;
     align-items: start;
     justify-content: space-between;
-    gap: 15px;
-    margin-top: 100px;
+    gap: 40px;
+    margin-top: 50px;
 }
-.placeorderleft{
+
+.place-order-left {
     width: 100%;
-    max-width: max(30%,500px);
+    max-width: 600px;
 }
-.placeorderleft .title{
-    font-size: 30px;
+
+.place-order-left .title {
+    font-size: 32px;
     font-weight: 600;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
+    color: #262626;
 }
-.placeorderleft input{
+
+.section {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.section h3 {
+    font-size: 20px;
+    color: #262626;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #FF6B6B;
+}
+
+.place-order-left input,
+.place-order-left select,
+.place-order-left textarea {
     margin-bottom: 15px;
     width: 100%;
-    padding: 10px;
-    border: 1px solid #c5c5c5;
-    border-radius: 4px;
-    outline-color: tomato;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 15px;
+    transition: border-color 0.3s;
 }
-.placeorderleft .multifield{
+
+.place-order-left input:focus,
+.place-order-left select:focus,
+.place-order-left textarea:focus {
+    outline: none;
+    border-color: #FF6B6B;
+}
+
+.place-order-left textarea {
+    resize: vertical;
+}
+
+.multi-field {
     display: flex;
+    gap: 15px;
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.payment-options label {
+    display: flex;
+    align-items: center;
     gap: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
 }
-.place-order-right{
+
+.payment-options label:hover {
+    border-color: #FF6B6B;
+    background: #fff5f5;
+}
+
+.payment-options input[type="radio"] {
+    width: auto;
+    margin: 0;
+}
+
+.payment-options input[type="radio"]:checked + span {
+    font-weight: 600;
+    color: #FF6B6B;
+}
+
+.place-order-right {
     width: 100%;
-    max-width: max(40%, 500px);
+    max-width: 400px;
+    position: sticky;
+    top: 20px;
 }
-.place-order .cart-total button{
-    margin-top: 30px;
+
+.order-summary {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.order-summary h2 {
+    font-size: 24px;
+    color: #262626;
+    margin-bottom: 20px;
+}
+
+.selected-services {
+    margin-bottom: 20px;
+}
+
+.selected-services h3 {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.service-summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.service-name {
+    font-weight: 600;
+    color: #262626;
+    margin-bottom: 3px;
+}
+
+.service-frequency {
+    font-size: 14px;
+    color: #666;
+}
+
+.service-price {
+    font-weight: 600;
+    color: #FF6B6B;
+}
+
+.price-summary {
+    margin-top: 20px;
+}
+
+.cart-total-details {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    color: #555;
+}
+
+.cart-total-details.total {
+    color: #262626;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.order-summary hr {
+    margin: 10px 0;
+    border: none;
+    height: 1px;
+    background: #eee;
+}
+
+.confirm-booking-btn {
+    width: 100%;
+    padding: 15px;
+    background: #FF6B6B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.confirm-booking-btn:hover {
+    background: #ff5252;
+}
+
+.booking-notes {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.booking-notes p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 1050px) {
+    .place-order {
+        flex-direction: column;
+    }
+    
+    .place-order-left,
+    .place-order-right {
+        max-width: 100%;
+    }
+    
+    .place-order-right {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: 20px;
+    }
+    
+    .multi-field {
+        flex-direction: column;
+        gap: 0;
+    }
 }
