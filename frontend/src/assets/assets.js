@@ -93,7 +93,7 @@ export const services_list = [
   {
       _id: "1",
       name: "Basic Home Cleaning",
-      image: placeholderImages.home_cleaning,
+      image: placeholderImages.deep_cleaning,
       price: 399,
       basePrice: "399 / 599 / 799",
       description: "Professional home cleaning service for 1BHK/2BHK/3BHK homes",
@@ -135,7 +135,7 @@ export const services_list = [
   {
       _id: "4",
       name: "Bathroom Cleaning",
-      image: placeholderImages.bathroom_cleaning,
+      image: placeholderImages.event_cleaning,
       price: 199,
       basePrice: "199 / 299 / 399 / 499",
       description: "Thorough bathroom sanitization and cleaning",
