@@ -1,0 +1,54 @@
+/* frontend/src/components/ServicesDisplay/ServicesDisplay.css */
+.services-display {
+    margin-top: 30px;
+}
+
+.services-display h2 {
+    font-size: max(2vw, 24px);
+    font-weight: 600;
+    color: #262626;
+    margin-bottom: 10px;
+}
+
+.combo-description {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background: #FFF3E0;
+    border-radius: 8px;
+    border-left: 4px solid #FF6B6B;
+}
+
+.services-display-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    margin-top: 30px;
+    gap: 30px;
+    row-gap: 40px;
+}
+
+.no-services {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.no-services p {
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .services-display-list {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+    
+    .services-display h2 {
+        font-size: 20px;
+    }
+    
+    .combo-description {
+        font-size: 14px;
+    }
+}

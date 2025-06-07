@@ -1,0 +1,73 @@
+/* frontend/src/components/Logo/Logo.css */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.logo-icon svg {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #FF6B6B;
+    line-height: 1;
+}
+
+.logo-tagline {
+    font-size: 10px;
+    color: #666;
+    line-height: 1;
+}
+
+/* Navbar specific styles */
+.navbar .logo-container {
+    height: 60px;
+}
+
+/* Footer specific styles */
+.footer .logo-container .logo-icon svg {
+    width: 50px;
+    height: 50px;
+}
+
+.footer .logo-container .logo-text {
+    filter: brightness(0) invert(1);
+}
+
+.footer .logo-container .logo-icon svg path:first-child {
+    fill: white;
+}
+
+.footer .logo-container .logo-icon svg path:nth-child(2) {
+    fill: #323232;
+}
+
+.footer .logo-container .logo-icon svg path:nth-child(3),
+.footer .logo-container .logo-icon svg path:nth-child(4) {
+    fill: white;
+}
+
+@media (max-width: 768px) {
+    .logo-title {
+        font-size: 20px;
+    }
+    
+    .logo-tagline {
+        font-size: 9px;
+    }
+    
+    .logo-icon svg {
+        width: 35px;
+        height: 35px;
+    }
+}

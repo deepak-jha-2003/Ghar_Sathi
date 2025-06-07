@@ -1,16 +1,21 @@
+// frontend/src/pages/Home/Home.jsx
 import React, { useState } from "react";
 import "./Home.css";
 import Header from "../../components/Header/Header";
-import ExploreMenu from "../../components/Explore-Munu/ExploreMenu";
-import FoodDisplay from "../../components/FoodDisplay/FoodDisplay";
+import ExploreServices from "../../components/ExploreServices/ExploreServices";
+import ServicesDisplay from "../../components/ServicesDisplay/ServicesDisplay";
+import HowItWorks from "../../components/HowItWorks/HowItWorks";
 import AppDownload from "../../components/AppDownload/AppDownload";
+
 const Home = () => {
   const [category, setCategory] = useState("All");
+  
   return (
     <div>
       <Header />
-      <ExploreMenu category={category} setCategory={setCategory} />
-      <FoodDisplay category={category} />
+      <ExploreServices category={category} setCategory={setCategory} />
+      <ServicesDisplay category={category} />
+      <HowItWorks />
       <AppDownload />
     </div>
   );

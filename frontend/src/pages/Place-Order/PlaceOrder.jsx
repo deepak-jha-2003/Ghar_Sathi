@@ -1,104 +1,239 @@
+// frontend/src/pages/Place-Order/PlaceOrder.jsx
 import React, { useContext, useState } from "react";
 import "./PlaceOrder.css";
 import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
-  const { getTotleCartAmount } = useContext(StoreContext);
+  const { getTotalCartAmount, cartItem, services_list, selectedFrequency } = useContext(StoreContext);
   const navigate = useNavigate();
-  const [paymentDetails, setPaymentDetails] = useState({
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-    cardHolder: ""
+  
+  const [bookingDetails, setBookingDetails] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    serviceDate: "",
+    serviceTime: "",
+    specialInstructions: "",
+    paymentMethod: "online"
   });
 
-  const handlePaymentSubmit = (e) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setBookingDetails(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const getSelectedServices = () => {
+    return services_list.filter(service => cartItem[service._id] > 0);
+  };
+
+  const handleBookingSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically integrate with a payment gateway
-    // For now, we'll just simulate a successful payment
-    alert("Payment processed successfully!");
+    // Here you would typically send the booking details to your backend
+    alert("Booking confirmed! You will receive a confirmation email shortly.");
     navigate("/");
   };
 
+  // Get minimum date (today)
+  const today = new Date().toISOString().split('T')[0];
+
   return (
-    <form className="place-order" onSubmit={handlePaymentSubmit}>
-      <div className="placeorderleft">
-        <p className="title">Delivery Information</p>
-        <div className="payment-section">
-          <p className="title">Payment Information</p>
-          <input
-            type="text"
-            placeholder="Card Number"
-            value={paymentDetails.cardNumber}
-            onChange={(e) => setPaymentDetails({...paymentDetails, cardNumber: e.target.value})}
-            required
-          />
-          <div className="multifield">
+    <form className="place-order" onSubmit={handleBookingSubmit}>
+      <div className="place-order-left">
+        <h2 className="title">Booking Information</h2>
+        
+        <div className="section">
+          <h3>Personal Details</h3>
+          <div className="multi-field">
             <input
               type="text"
-              placeholder="MM/YY"
-              value={paymentDetails.expiryDate}
-              onChange={(e) => setPaymentDetails({...paymentDetails, expiryDate: e.target.value})}
+              name="firstName"
+              placeholder="First name"
+              value={bookingDetails.firstName}
+              onChange={handleInputChange}
               required
             />
             <input
               type="text"
-              placeholder="CVV"
-              value={paymentDetails.cvv}
-              onChange={(e) => setPaymentDetails({...paymentDetails, cvv: e.target.value})}
+              name="lastName"
+              placeholder="Last name"
+              value={bookingDetails.lastName}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email address"
+            value={bookingDetails.email}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone number"
+            value={bookingDetails.phone}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="section">
+          <h3>Service Location</h3>
+          <input
+            type="text"
+            name="address"
+            placeholder="Complete address"
+            value={bookingDetails.address}
+            onChange={handleInputChange}
+            required
+          />
+          <div className="multi-field">
+            <input
+              type="text"
+              name="city"
+              placeholder="City"
+              value={bookingDetails.city}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="text"
+              name="state"
+              placeholder="State"
+              value={bookingDetails.state}
+              onChange={handleInputChange}
               required
             />
           </div>
           <input
             type="text"
-            placeholder="Card Holder Name"
-            value={paymentDetails.cardHolder}
-            onChange={(e) => setPaymentDetails({...paymentDetails, cardHolder: e.target.value})}
+            name="zipCode"
+            placeholder="Zip code"
+            value={bookingDetails.zipCode}
+            onChange={handleInputChange}
             required
           />
         </div>
-        <div className="multifield">
-          <input type="text" placeholder="First name" />
-          <input type="text" placeholder="Last name" />
+
+        <div className="section">
+          <h3>Schedule Service</h3>
+          <div className="multi-field">
+            <input
+              type="date"
+              name="serviceDate"
+              min={today}
+              value={bookingDetails.serviceDate}
+              onChange={handleInputChange}
+              required
+            />
+            <select
+              name="serviceTime"
+              value={bookingDetails.serviceTime}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Select Time</option>
+              <option value="9:00 AM">9:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="2:00 PM">2:00 PM</option>
+              <option value="3:00 PM">3:00 PM</option>
+              <option value="4:00 PM">4:00 PM</option>
+              <option value="5:00 PM">5:00 PM</option>
+            </select>
+          </div>
+          <textarea
+            name="specialInstructions"
+            placeholder="Special instructions (optional)"
+            rows="3"
+            value={bookingDetails.specialInstructions}
+            onChange={handleInputChange}
+          />
         </div>
-        <input type="email" placeholder="Email address" />
-        <input type="text" placeholder="Street" />
-        <div className="multifield">
-          <input type="text" placeholder="City" />
-          <input type="text" placeholder="State" />
+
+        <div className="section">
+          <h3>Payment Method</h3>
+          <div className="payment-options">
+            <label>
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="online"
+                checked={bookingDetails.paymentMethod === "online"}
+                onChange={handleInputChange}
+              />
+              <span>Online Payment (Cards, UPI, Net Banking)</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="cash"
+                checked={bookingDetails.paymentMethod === "cash"}
+                onChange={handleInputChange}
+              />
+              <span>Cash after service</span>
+            </label>
+          </div>
         </div>
-        <div className="multifield">
-          <input type="text" placeholder="Zip code" />
-          <input type="text" placeholder="country" />
-        </div>
-        <input type="text" placeholder="Phone" />
       </div>
+
       <div className="place-order-right">
-        <div className="cart-total">
-          <h2>Cart Totals</h2>
+        <div className="order-summary">
+          <h2>Booking Summary</h2>
+          
+          <div className="selected-services">
+            <h3>Selected Services</h3>
+            {getSelectedServices().map((service, index) => (
+              <div key={index} className="service-summary-item">
+                <div>
+                  <p className="service-name">{service.name}</p>
+                  <p className="service-frequency">
+                    {selectedFrequency[service._id] || service.frequency?.[0]}
+                  </p>
+                </div>
+                <p className="service-price">₹{service.price}</p>
+              </div>
+            ))}
+          </div>
 
-          <div>
-            <div className="cart-total-detels">
+          <div className="price-summary">
+            <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>${getTotleCartAmount()}</p>
+              <p>₹{getTotalCartAmount()}</p>
             </div>
             <hr />
-
-            <div className="cart-total-detels">
+            <div className="cart-total-details">
               <p>GST (18%)</p>
-              <p>${getTotleCartAmount() === 0 ? 0 : (getTotleCartAmount() * 0.18).toFixed(2)}</p>
+              <p>₹{(getTotalCartAmount() * 0.18).toFixed(2)}</p>
             </div>
             <hr />
-            <div className="cart-total-detels">
-              <b>Total</b>
-              <b>
-                ${getTotleCartAmount() === 0 ? 0 : (getTotleCartAmount() + (getTotleCartAmount() * 0.18)).toFixed(2)}
-              </b>
+            <div className="cart-total-details total">
+              <b>Total Amount</b>
+              <b>₹{(getTotalCartAmount() + (getTotalCartAmount() * 0.18)).toFixed(2)}</b>
             </div>
-            <button type="submit">
-              PAY NOW
-            </button>
+          </div>
+
+          <button type="submit" className="confirm-booking-btn">
+            CONFIRM BOOKING
+          </button>
+
+          <div className="booking-notes">
+            <p>✓ Free cancellation up to 24 hours before service</p>
+            <p>✓ 100% money-back guarantee</p>
+            <p>✓ Verified service professionals</p>
           </div>
         </div>
       </div>

@@ -80,3 +80,13 @@
         width: 70px;
     }
 }
+.footer-content-left{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+}
+
+.footer-content-left .logo-container {
+    margin-bottom: 10px;
+}
