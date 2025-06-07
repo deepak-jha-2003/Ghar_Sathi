@@ -17,7 +17,7 @@ export const placeholderImages = {
   app_store: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/512px-Download_on_the_App_Store_Badge.svg.png",
   
   // Service images
-  cleaning_service: "https://asset.cloudinary.com/dvhcorhgk/e9f0f058a23b172afed600a7e588663a",
+  cleaning_service: "https://res.cloudinary.com/dvhcorhgk/image/upload/v1749319569/Ranga_Jaan_kqnb0u.jpg",
   cooking_service: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop",
   babysitting_service: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&h=300&fit=crop",
   security_service: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
