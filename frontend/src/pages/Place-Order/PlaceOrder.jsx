@@ -13,6 +13,8 @@ const PlaceOrder = () => {
     lastName: "",
     email: "",
     phone: "",
+    aadharNo: "", // Added Aadhar number field
+    gender: "", // Added gender field
     address: "",
     city: "",
     state: "",
@@ -86,6 +88,25 @@ const PlaceOrder = () => {
             onChange={handleInputChange}
             required
           />
+          <input
+            type="text"
+            name="aadharNo"
+            placeholder="Aadhar Number"
+            value={bookingDetails.aadharNo}
+            onChange={handleInputChange}
+            required
+          />
+          <select
+            name="gender"
+            value={bookingDetails.gender}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
 
         <div className="section">

@@ -17,20 +17,20 @@ export const placeholderImages = {
   app_store: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/512px-Download_on_the_App_Store_Badge.svg.png",
   
   // Service images
-  cleaning_service: "https://res.cloudinary.com/dvhcorhgk/image/upload/v1749319569/Ranga_Jaan_kqnb0u.jpg",
-  cooking_service: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop",
-  babysitting_service: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&h=300&fit=crop",
-  security_service: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+  cleaning_service: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749319987/file_00000000b28c623097c6c0011abb683c_btuhxf.png",
+  cooking_service: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749319845/file_00000000b89c61f88d6af5835da627a1_emw1ly.png",
+  babysitting_service: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749320035/file_0000000091706230876f928a14b41733_psdtxt.png",
+  security_service: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749320020/file_0000000053f8623099134b3a059e983c_ygqu1t.png",
   rental_service: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop",
   school_cleaning: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400&h=300&fit=crop",
   
   // Cleaning subcategory images  
-  home_cleaning: "https://images.unsplash.com/photo-1628177142898-93d60c3d6e04?w=400&h=300&fit=crop",
-  office_cleaning: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop",
-  deep_cleaning: "https://images.unsplash.com/photo-1527515545081-5db817172677?w=400&h=300&fit=crop",
-  kitchen_cleaning: "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=400&h=300&fit=crop",
-  bathroom_cleaning: "https://images.unsplash.com/photo-1584622781867-1c29216e11f9?w=400&h=300&fit=crop",
-  water_tank_cleaning: "https://images.unsplash.com/photo-1612267168669-679c961c5b31?w=400&h=300&fit=crop",
+  home_cleaning: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749323266/file_000000005ec0622fa2c1409aacfd22a2_mrf4qp.png",
+  office_cleaning: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749323266/file_000000005ec0622fa2c1409aacfd22a2_mrf4qp.png",
+  deep_cleaning: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749323264/file_00000000c86461f89641d648b60fd483_dk2iuy.png",
+  kitchen_cleaning: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749324390/file_000000003a3061f9834fe09bc0031867_afbghu.png",
+  bathroom_cleaning: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749322919/file_00000000b93c622f849bf1ac38ac7d31_jjv26p.png",
+  water_tank_cleaning: "https://res.cloudinary.com/dmdkmkzqr/image/upload/v1749322892/file_000000009ad061f7815c20d864ad68fe_my6hvf.png  ",
   event_cleaning: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop",
   appliance_cleaning: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
   
@@ -61,6 +61,16 @@ export const service_categories = [
       category_image: placeholderImages.cleaning_service,
       category_id: "cleaning"
   },
+//   {
+//       category_name: "School Cleaning",
+//       category_image: placeholderImages.school_cleaning,
+//       category_id: "cleaning"
+//   },
+//   {
+//       category_name: "College Cleaning",
+//       category_image: placeholderImages.school_cleaning,
+//       category_id: "cleaning"
+//   },
   {
       category_name: "Cooking Services",
       category_image: placeholderImages.cooking_service,
@@ -80,11 +90,6 @@ export const service_categories = [
       category_name: "Property Rental",
       category_image: placeholderImages.rental_service,
       category_id: "rental"
-  },
-  {
-      category_name: "School Cleaning",
-      category_image: placeholderImages.school_cleaning,
-      category_id: "school_cleaning"
   }
 ];
 
@@ -103,6 +108,34 @@ export const services_list = [
       duration: "2-4 hours",
       includes: ["Sweeping", "Mopping", "Dusting", "Basic arrangement"],
       propertySize: ["1BHK", "2BHK", "3BHK"]
+  },
+  {
+      _id: "9",
+      name: "School Cleaning",
+      image: placeholderImages.school_cleaning,
+      price: 1999,
+      basePrice: "1999 / 2999 / 3999",
+      description: "Comprehensive cleaning services for schools and educational institutions",
+      category: "cleaning",
+      subcategory: "Commercial Cleaning",
+      frequency: ["Daily", "Weekly", "Monthly"],
+      duration: "4-8 hours",
+      includes: ["Classroom cleaning", "Corridor maintenance", "Playground cleaning", "Washroom sanitization"],
+      propertySize: ["Small School", "Medium School", "Large School"]
+  },
+  {
+      _id: "10",
+      name: "College Cleaning",
+      image: placeholderImages.school_cleaning,
+      price: 2999,
+      basePrice: "2999 / 4999 / 7999",
+      description: "Professional cleaning services for colleges and university campuses",
+      category: "cleaning",
+      subcategory: "Commercial Cleaning",
+      frequency: ["Daily", "Weekly", "Monthly"],
+      duration: "6-12 hours",
+      includes: ["Lecture hall cleaning", "Laboratory sanitization", "Common area maintenance", "Campus-wide cleaning"],
+      propertySize: ["Small Campus", "Medium Campus", "Large Campus"]
   },
   {
       _id: "2",
