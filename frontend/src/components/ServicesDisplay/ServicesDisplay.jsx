@@ -10,26 +10,47 @@ const ServicesDisplay = ({ category }) => {
   // Filter services based on category
   const filteredServices = services_list.filter(item => {
     if (category === "All") return true;
-    if (category === "combo") return item.category === "combo";
     return item.category === category;
   });
 
+  // Get category title
+  const getCategoryTitle = () => {
+    switch(category) {
+      case "All": return "All Services";
+      case "cleaning": return "Cleaning Services";
+      case "cooking": return "Cooking Services";
+      case "babysitting": return "Babysitting Services";
+      case "security": return "Security Services";
+      case "combo": return "Combo Services";
+      default: return "Services";
+    }
+  };
+
+  // Get category description
+  const getCategoryDescription = () => {
+    switch(category) {
+      case "combo": 
+        return "Save more with our combo packages! Get multiple services bundled together at discounted rates.";
+      case "cleaning": 
+        return "Professional cleaning services for homes, offices, and commercial spaces with verified cleaners.";
+      case "cooking": 
+        return "Skilled cooks for daily meals, special occasions, and events with flexible timing options.";
+      case "babysitting": 
+        return "Trusted and trained babysitters for your children with background verification and safety protocols.";
+      case "security": 
+        return "Professional security services for residential, commercial, and event protection in Surat.";
+      default: 
+        return null;
+    }
+  };
+
   return (
     <div className="services-display" id="services-display">
-      <h2>
-        {category === "All" ? "All Services" : 
-         category === "cleaning" ? "Cleaning Services" :
-         category === "cooking" ? "Cooking Services" :
-         category === "babysitting" ? "Babysitting Services" :
-         category === "security" ? "Security Services" :
-         category === "rental" ? "Property Rental" :
-        //  category === "school_cleaning" ? "School & College Cleaning" :
-         category === "combo" ? "Combo Services" : "Services"}
-      </h2>
+      <h2>{getCategoryTitle()}</h2>
       
-      {category === "combo" && (
+      {getCategoryDescription() && (
         <p className="combo-description">
-          Save more with our combo packages! Get multiple services bundled together at discounted rates.
+          {getCategoryDescription()}
         </p>
       )}
       
@@ -42,12 +63,27 @@ const ServicesDisplay = ({ category }) => {
             description={item.description}
             price={item.price}
             basePrice={item.basePrice}
+            onetimePrice={item.onetimePrice}
+            monthlyPrice={item.monthlyPrice}
             image={item.image}
             frequency={item.frequency}
             duration={item.duration}
             includes={item.includes}
             propertySize={item.propertySize}
             familySize={item.familySize}
+            cookType={item.cookType}
+            category={item.category}
+            subcategory={item.subcategory}
+            ageGroup={item.ageGroup}
+            careType={item.careType}
+            securityType={item.securityType}
+            specialization={item.specialization}
+            eventType={item.eventType}
+            location={item.location}
+            idealFor={item.idealFor}
+            features={item.features}
+            notes={item.notes}
+            options={item.options}
           />
         ))}
       </div>

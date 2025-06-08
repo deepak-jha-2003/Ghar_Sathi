@@ -13,76 +13,20 @@ const Cart = () => {
     getTotalCartAmount,
     selectedFrequency,
     selectedSize,
+    selectedCookType,
     updateServiceFrequency,
-    updateServiceSize 
+    updateServiceSize,
+    updateServiceCookType,
+    getServicePrice
   } = useContext(StoreContext);
 
   const navigate = useNavigate();
+  const totalAmount = getTotalCartAmount();
 
-  // Function to get dynamic price based on size and frequency
-  const getServicePrice = (service) => {
-    let basePrice = service.price;
-    
-    // Get selected size for this service
-    const selectedSizeForService = selectedSize[service._id] || (service.propertySize ? service.propertySize[0] : null);
-    
-    // Calculate price based on property size
-    if (service.propertySize && selectedSizeForService) {
-      const sizeIndex = service.propertySize.indexOf(selectedSizeForService);
-      if (sizeIndex !== -1) {
-        // Parse the basePrice string if it contains multiple prices
-        if (service.basePrice && service.basePrice.includes('/')) {
-          const prices = service.basePrice.split(' / ').map(p => parseInt(p.replace(/[₹,]/g, '')));
-          if (prices[sizeIndex]) {
-            basePrice = prices[sizeIndex];
-          }
-        } else {
-          // If no basePrice with multiple options, use multipliers
-          const sizeMultipliers = [1, 1.5, 2]; // 1BHK, 2BHK, 3BHK multipliers
-          if (sizeMultipliers[sizeIndex]) {
-            basePrice = service.price * sizeMultipliers[sizeIndex];
-          }
-        }
-      }
-    }
-    
-    // Calculate price based on family size (for cooking services)
-    if (service.familySize && selectedSize[service._id]) {
-      const selectedFamilySize = selectedSize[service._id];
-      const sizeIndex = service.familySize.indexOf(selectedFamilySize);
-      if (sizeIndex !== -1 && service.basePrice && service.basePrice.includes('-')) {
-        const prices = service.basePrice.split(' - ').map(p => parseInt(p.replace(/[₹,]/g, '')));
-        if (prices[sizeIndex]) {
-          basePrice = prices[sizeIndex];
-        }
-      }
-    }
-    
-    // Apply frequency-based pricing
-    const selectedFreq = selectedFrequency[service._id];
-    if (selectedFreq === "Monthly" && service.frequency?.includes("Monthly")) {
-      basePrice = basePrice * 0.9; // 10% discount for monthly
-    }
-    
-    return Math.round(basePrice);
+  // Get display price for service
+  const getDisplayPrice = (service) => {
+    return getServicePrice ? getServicePrice(service) : (service.onetimePrice || service.monthlyPrice || service.price);
   };
-
-  // Updated getTotalCartAmount to use dynamic pricing
-  const getDynamicTotalAmount = () => {
-    let totalAmount = 0;
-    for (const item in cartItem) {
-      if (cartItem[item] > 0) {
-        let itemInfo = services_list.find((service) => service._id === item);
-        if (itemInfo) {
-          const dynamicPrice = getServicePrice(itemInfo);
-          totalAmount += dynamicPrice * cartItem[item];
-        }
-      }
-    }
-    return totalAmount;
-  };
-
-  const totalAmount = getDynamicTotalAmount();
 
   return (
     <div className="cart">
@@ -94,7 +38,14 @@ const Cart = () => {
       <div className="cart-items">
         {services_list.map((item, index) => {
           if (cartItem[item._id] > 0) {
-            const servicePrice = getServicePrice(item);
+            const servicePrice = getDisplayPrice(item);
+            const selectedFreq = selectedFrequency[item._id] || (item.frequency && item.frequency[0]);
+            const selectedSizeForService = selectedSize[item._id] || 
+              (item.propertySize && item.propertySize[0]) ||
+              (item.familySize && item.familySize[0]);
+            const selectedCookTypeForService = selectedCookType[item._id] || 
+              (item.cookType && item.cookType[0]);
+
             return (
               <div key={index} className="cart-item-card">
                 <div className="cart-item-image">
@@ -106,11 +57,12 @@ const Cart = () => {
                   <p className="cart-item-desc">{item.description}</p>
                   
                   <div className="cart-item-options">
+                    {/* Frequency selector */}
                     {item.frequency && item.frequency.length > 1 && (
                       <div className="option-group">
                         <label>Frequency:</label>
                         <select 
-                          value={selectedFrequency[item._id] || item.frequency[0]}
+                          value={selectedFreq}
                           onChange={(e) => updateServiceFrequency(item._id, e.target.value)}
                         >
                           {item.frequency.map((freq, idx) => (
@@ -120,6 +72,7 @@ const Cart = () => {
                       </div>
                     )}
                     
+                    {/* Property size selector */}
                     {item.propertySize && item.propertySize.length > 1 && (
                       <div className="option-group">
                         <label>Property Size:</label>
@@ -134,6 +87,7 @@ const Cart = () => {
                       </div>
                     )}
                     
+                    {/* Family size selector */}
                     {item.familySize && item.familySize.length > 1 && (
                       <div className="option-group">
                         <label>Family Size:</label>
@@ -147,14 +101,26 @@ const Cart = () => {
                         </select>
                       </div>
                     )}
+                    
+                    {/* Cook type selector */}
+                    {item.cookType && item.cookType.length > 1 && (
+                      <div className="option-group">
+                        <label>Cook Type:</label>
+                        <select 
+                          value={selectedCookType[item._id] || item.cookType[0]}
+                          onChange={(e) => updateServiceCookType(item._id, e.target.value)}
+                        >
+                          {item.cookType.map((type, idx) => (
+                            <option key={idx} value={type}>{type}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
                   </div>
                 </div>
                 
                 <div className="cart-item-price">
                   <p className="price">₹{servicePrice}</p>
-                  {selectedFrequency[item._id] === "Monthly" && 
-                    <span className="discount-tag">10% off</span>
-                  }
                   <button 
                     className="remove-btn"
                     onClick={() => removeFromCart(item._id)}

@@ -1,5 +1,5 @@
 // frontend/src/components/Navbar/Navbar.jsx
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import "./Navbar.css";
 import { assets, placeholderImages } from "../../assets/assets.js";
 import { Link } from "react-router-dom";
@@ -8,7 +8,9 @@ import Logo from "../Logo/Logo";
 
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
-  const { getServiceCount } = useContext(StoreContext);
+  const { getServiceCount, searchServices } = useContext(StoreContext);
+  const [showSearch, setShowSearch] = useState(false);
+  const searchInputRef = useRef(null);
 
   const handleScrollToSection = (sectionId, menuName) => {
     setMenu(menuName);
@@ -18,6 +20,30 @@ const Navbar = ({ setShowLogin }) => {
         element.scrollIntoView({ behavior: "smooth" });
       }
     }, 100);
+  };
+
+  const handleSearchClick = () => {
+    setShowSearch(!showSearch);
+    // Focus the input when search is shown
+    if (!showSearch) {
+      setTimeout(() => {
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+        }
+      }, 100);
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const query = searchInputRef.current.value;
+    searchServices(query);
+    
+    // Scroll to services section to show results
+    const element = document.getElementById("services-display");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -63,7 +89,25 @@ const Navbar = ({ setShowLogin }) => {
         </Link>
       </ul>
       <div className="navbar-right">
-        <img src={placeholderImages.search_icon} alt="Search" />
+        <div className="search-container">
+          <img 
+            src={placeholderImages.search_icon} 
+            alt="Search" 
+            onClick={handleSearchClick}
+            className="search-icon"
+          />
+          {showSearch && (
+            <form onSubmit={handleSearchSubmit} className="search-form">
+              <input 
+                type="text" 
+                placeholder="Search services..." 
+                ref={searchInputRef}
+                className="search-input"
+              />
+              <button type="submit" className="search-button">Search</button>
+            </form>
+          )}
+        </div>
         <div className="navbar-search-icon">
           <Link to="/cart">
             <img src={placeholderImages.basket_icon} alt="Cart" />
