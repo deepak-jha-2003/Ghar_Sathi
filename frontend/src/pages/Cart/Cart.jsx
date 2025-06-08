@@ -19,17 +19,70 @@ const Cart = () => {
 
   const navigate = useNavigate();
 
+  // Function to get dynamic price based on size and frequency
   const getServicePrice = (service) => {
-    let price = service.price;
+    let basePrice = service.price;
     
-    // Apply frequency-based pricing
-    if (selectedFrequency[service._id] === "Monthly" && 
-        service.frequency?.includes("Monthly")) {
-      price = price * 0.9; // 10% discount for monthly
+    // Get selected size for this service
+    const selectedSizeForService = selectedSize[service._id] || (service.propertySize ? service.propertySize[0] : null);
+    
+    // Calculate price based on property size
+    if (service.propertySize && selectedSizeForService) {
+      const sizeIndex = service.propertySize.indexOf(selectedSizeForService);
+      if (sizeIndex !== -1) {
+        // Parse the basePrice string if it contains multiple prices
+        if (service.basePrice && service.basePrice.includes('/')) {
+          const prices = service.basePrice.split(' / ').map(p => parseInt(p.replace(/[₹,]/g, '')));
+          if (prices[sizeIndex]) {
+            basePrice = prices[sizeIndex];
+          }
+        } else {
+          // If no basePrice with multiple options, use multipliers
+          const sizeMultipliers = [1, 1.5, 2]; // 1BHK, 2BHK, 3BHK multipliers
+          if (sizeMultipliers[sizeIndex]) {
+            basePrice = service.price * sizeMultipliers[sizeIndex];
+          }
+        }
+      }
     }
     
-    return price;
+    // Calculate price based on family size (for cooking services)
+    if (service.familySize && selectedSize[service._id]) {
+      const selectedFamilySize = selectedSize[service._id];
+      const sizeIndex = service.familySize.indexOf(selectedFamilySize);
+      if (sizeIndex !== -1 && service.basePrice && service.basePrice.includes('-')) {
+        const prices = service.basePrice.split(' - ').map(p => parseInt(p.replace(/[₹,]/g, '')));
+        if (prices[sizeIndex]) {
+          basePrice = prices[sizeIndex];
+        }
+      }
+    }
+    
+    // Apply frequency-based pricing
+    const selectedFreq = selectedFrequency[service._id];
+    if (selectedFreq === "Monthly" && service.frequency?.includes("Monthly")) {
+      basePrice = basePrice * 0.9; // 10% discount for monthly
+    }
+    
+    return Math.round(basePrice);
   };
+
+  // Updated getTotalCartAmount to use dynamic pricing
+  const getDynamicTotalAmount = () => {
+    let totalAmount = 0;
+    for (const item in cartItem) {
+      if (cartItem[item] > 0) {
+        let itemInfo = services_list.find((service) => service._id === item);
+        if (itemInfo) {
+          const dynamicPrice = getServicePrice(itemInfo);
+          totalAmount += dynamicPrice * cartItem[item];
+        }
+      }
+    }
+    return totalAmount;
+  };
+
+  const totalAmount = getDynamicTotalAmount();
 
   return (
     <div className="cart">
@@ -69,12 +122,26 @@ const Cart = () => {
                     
                     {item.propertySize && item.propertySize.length > 1 && (
                       <div className="option-group">
-                        <label>Size:</label>
+                        <label>Property Size:</label>
                         <select 
                           value={selectedSize[item._id] || item.propertySize[0]}
                           onChange={(e) => updateServiceSize(item._id, e.target.value)}
                         >
                           {item.propertySize.map((size, idx) => (
+                            <option key={idx} value={size}>{size}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                    
+                    {item.familySize && item.familySize.length > 1 && (
+                      <div className="option-group">
+                        <label>Family Size:</label>
+                        <select 
+                          value={selectedSize[item._id] || item.familySize[0]}
+                          onChange={(e) => updateServiceSize(item._id, e.target.value)}
+                        >
+                          {item.familySize.map((size, idx) => (
                             <option key={idx} value={size}>{size}</option>
                           ))}
                         </select>
@@ -130,19 +197,19 @@ const Cart = () => {
             <div className="price-details">
               <div className="cart-total-details">
                 <p>Subtotal</p>
-                <p>₹{getTotalCartAmount()}</p>
+                <p>₹{totalAmount}</p>
               </div>
               <hr />
               
               <div className="cart-total-details">
                 <p>GST (18%)</p>
-                <p>₹{getTotalCartAmount() === 0 ? 0 : (getTotalCartAmount() * 0.18).toFixed(2)}</p>
+                <p>₹{totalAmount === 0 ? 0 : (totalAmount * 0.18).toFixed(2)}</p>
               </div>
               <hr />
               
               <div className="cart-total-details total">
                 <b>Total Amount</b>
-                <b>₹{getTotalCartAmount() === 0 ? 0 : (getTotalCartAmount() + (getTotalCartAmount() * 0.18)).toFixed(2)}</b>
+                <b>₹{totalAmount === 0 ? 0 : (totalAmount + (totalAmount * 0.18)).toFixed(2)}</b>
               </div>
             </div>
             

@@ -53,7 +53,7 @@ const Navbar = ({ setShowLogin }) => {
           </Link>
           <div className={getServiceCount() === 0 ? "" : "dot"}></div>
         </div>
-        <button onClick={() => setShowLogin(true)}>Sign In</button>
+        <button onClick={() => setShowLogin(true)}>Login</button>
       </div>
     </div>
   );
