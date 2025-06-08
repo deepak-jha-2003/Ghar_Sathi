@@ -23,6 +23,13 @@ const Navbar = ({ setShowLogin }) => {
         >
           Home
         </Link>
+        <Link
+          to="/about"
+          onClick={() => setMenu("about")}
+          className={menu === "about" ? "active" : ""}
+        >
+          About Us
+        </Link>
         <a
           href="#explore-services"
           onClick={() => setMenu("services")}
@@ -53,7 +60,7 @@ const Navbar = ({ setShowLogin }) => {
           </Link>
           <div className={getServiceCount() === 0 ? "" : "dot"}></div>
         </div>
-        <button onClick={() => setShowLogin(true)}>Login</button>
+        <button onClick={() => setShowLogin(true)}>Log In</button>
       </div>
     </div>
   );
