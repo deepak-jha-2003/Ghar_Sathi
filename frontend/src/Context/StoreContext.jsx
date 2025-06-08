@@ -8,6 +8,7 @@ const StoreContextProvider = (props) => {
   const [cartItem, setCartItem] = useState({});
   const [selectedFrequency, setSelectedFrequency] = useState({});
   const [selectedSize, setSelectedSize] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
   const [bookingDetails, setBookingDetails] = useState({
     date: "",
     time: "",
@@ -145,6 +146,30 @@ const StoreContextProvider = (props) => {
     });
   };
 
+  // New function to search services
+  const searchServices = (query) => {
+    setSearchQuery(query);
+  };
+
+  // New function to get filtered services based on category and search query
+  const getFilteredServices = (category) => {
+    return services_list.filter(item => {
+      // First filter by category
+      const categoryMatch = 
+        category === "All" ? true : 
+        category === "combo" ? item.category === "combo" :
+        item.category === category;
+      
+      // Then filter by search query if it exists
+      const searchMatch = searchQuery ? 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        item.description.toLowerCase().includes(searchQuery.toLowerCase()) :
+        true;
+      
+      return categoryMatch && searchMatch;
+    });
+  };
+
   const contextValue = {
     services_list,
     cartItem,
@@ -160,7 +185,10 @@ const StoreContextProvider = (props) => {
     bookingDetails,
     updateBookingDetails,
     clearCart,
-    getServicePrice // Export the dynamic pricing function
+    getServicePrice,
+    searchQuery,
+    searchServices,
+    getFilteredServices // Add the new function to the context
   };
 
   return (

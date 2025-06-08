@@ -5,14 +5,10 @@ import { StoreContext } from "../../Context/StoreContext";
 import ServiceItem from "../ServiceItem/ServiceItem";
 
 const ServicesDisplay = ({ category }) => {
-  const { services_list } = useContext(StoreContext);
+  const { getFilteredServices, searchQuery } = useContext(StoreContext);
 
-  // Filter services based on category
-  const filteredServices = services_list.filter(item => {
-    if (category === "All") return true;
-    if (category === "combo") return item.category === "combo";
-    return item.category === category;
-  });
+  // Use the new getFilteredServices function from context
+  const filteredServices = getFilteredServices(category);
 
   return (
     <div className="services-display" id="services-display">
@@ -23,11 +19,11 @@ const ServicesDisplay = ({ category }) => {
          category === "babysitting" ? "Babysitting Services" :
          category === "security" ? "Security Services" :
          category === "rental" ? "Property Rental" :
-        //  category === "school_cleaning" ? "School & College Cleaning" :
          category === "combo" ? "Combo Services" : "Services"}
+        {searchQuery && <span className="search-results"> - Search results for "{searchQuery}"</span>}
       </h2>
       
-      {category === "combo" && (
+      {category === "combo" && !searchQuery && (
         <p className="combo-description">
           Save more with our combo packages! Get multiple services bundled together at discounted rates.
         </p>
@@ -54,7 +50,11 @@ const ServicesDisplay = ({ category }) => {
       
       {filteredServices.length === 0 && (
         <div className="no-services">
-          <p>No services available in this category.</p>
+          {searchQuery ? (
+            <p>No services found matching "{searchQuery}". Try a different search term.</p>
+          ) : (
+            <p>No services available in this category.</p>
+          )}
         </div>
       )}
     </div>
