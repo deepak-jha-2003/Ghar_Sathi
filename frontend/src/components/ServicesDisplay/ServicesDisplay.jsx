@@ -23,7 +23,7 @@ const ServicesDisplay = ({ category }) => {
          category === "babysitting" ? "Babysitting Services" :
          category === "security" ? "Security Services" :
          category === "rental" ? "Property Rental" :
-         category === "school_cleaning" ? "School & College Cleaning" :
+        //  category === "school_cleaning" ? "School & College Cleaning" :
          category === "combo" ? "Combo Services" : "Services"}
       </h2>
       
