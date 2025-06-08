@@ -15,6 +15,12 @@ const StoreContextProvider = (props) => {
     address: "",
     specialInstructions: ""
   });
+  
+  // New state for search functionality
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredServices, setFilteredServices] = useState(services_list);
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   const addToCart = (itemId, frequency = null, size = null, cookType = null) => {
     if (!cartItem[itemId]) {
@@ -85,6 +91,134 @@ const StoreContextProvider = (props) => {
 
   const updateServiceCookType = (itemId, cookType) => {
     setSelectedCookType((prev) => ({ ...prev, [itemId]: cookType }));
+  };
+
+  // Search functionality
+  const performSearch = (query) => {
+    setSearchQuery(query);
+    setIsSearching(true);
+    
+    if (!query || query.trim() === "") {
+      setSearchResults([]);
+      setFilteredServices(services_list);
+      setIsSearching(false);
+      return;
+    }
+
+    const searchTerm = query.toLowerCase().trim();
+    
+    const results = services_list.filter(service => {
+      // Search in service name
+      const nameMatch = service.name.toLowerCase().includes(searchTerm);
+      
+      // Search in service description
+      const descMatch = service.description.toLowerCase().includes(searchTerm);
+      
+      // Search in service category
+      const categoryMatch = service.category.toLowerCase().includes(searchTerm);
+      
+      // Search in service subcategory
+      const subcategoryMatch = service.subcategory.toLowerCase().includes(searchTerm);
+      
+      // Search in includes array
+      const includesMatch = service.includes && 
+        service.includes.some(item => item.toLowerCase().includes(searchTerm));
+      
+      // Search in property sizes
+      const propertySizeMatch = service.propertySize && 
+        service.propertySize.some(size => size.toLowerCase().includes(searchTerm));
+      
+      // Search in family sizes
+      const familySizeMatch = service.familySize && 
+        service.familySize.some(size => size.toLowerCase().includes(searchTerm));
+      
+      // Search in cook types
+      const cookTypeMatch = service.cookType && 
+        service.cookType.some(type => type.toLowerCase().includes(searchTerm));
+      
+      // Search in frequency
+      const frequencyMatch = service.frequency && 
+        service.frequency.some(freq => freq.toLowerCase().includes(searchTerm));
+      
+      // Search common keywords
+      const keywordMatches = {
+        'clean': ['cleaning', 'clean', 'maintenance', 'deep clean'],
+        'cook': ['cooking', 'cook', 'chef', 'meal'],
+        'baby': ['babysitting', 'baby', 'child', 'kids'],
+        'security': ['security', 'guard', 'safety', 'protection'],
+        'home': ['home', 'house', 'residential'],
+        'office': ['office', 'commercial', 'workplace'],
+        'monthly': ['monthly', 'regular', 'subscription'],
+        'daily': ['daily', 'everyday'],
+        'weekly': ['weekly'],
+        'deep': ['deep', 'thorough', 'complete'],
+        'bathroom': ['bathroom', 'toilet', 'washroom'],
+        'kitchen': ['kitchen', 'cooking area'],
+        'window': ['window', 'glass'],
+        'event': ['event', 'party', 'wedding']
+      };
+      
+      let keywordMatch = false;
+      for (const [key, keywords] of Object.entries(keywordMatches)) {
+        if (searchTerm.includes(key)) {
+          keywordMatch = keywords.some(keyword => 
+            service.name.toLowerCase().includes(keyword) ||
+            service.description.toLowerCase().includes(keyword) ||
+            service.category.toLowerCase().includes(keyword) ||
+            service.subcategory.toLowerCase().includes(keyword)
+          );
+          if (keywordMatch) break;
+        }
+      }
+      
+      return nameMatch || descMatch || categoryMatch || subcategoryMatch || 
+             includesMatch || propertySizeMatch || familySizeMatch || 
+             cookTypeMatch || frequencyMatch || keywordMatch;
+    });
+
+    setSearchResults(results);
+    setFilteredServices(results);
+    setIsSearching(false);
+  };
+
+  // Real-time search as user types
+  const handleSearchInput = (query) => {
+    performSearch(query);
+  };
+
+  // Clear search
+  const clearSearch = () => {
+    setSearchQuery("");
+    setSearchResults([]);
+    setFilteredServices(services_list);
+    setIsSearching(false);
+  };
+
+  // Get search suggestions
+  const getSearchSuggestions = (query) => {
+    if (!query || query.length < 2) return [];
+    
+    const suggestions = new Set();
+    const searchTerm = query.toLowerCase();
+    
+    services_list.forEach(service => {
+      // Add service names that match
+      if (service.name.toLowerCase().includes(searchTerm)) {
+        suggestions.add(service.name);
+      }
+      
+      // Add categories that match
+      if (service.category.toLowerCase().includes(searchTerm)) {
+        suggestions.add(service.category.charAt(0).toUpperCase() + service.category.slice(1) + ' Services');
+      }
+      
+      // Add subcategories that match
+      if (service.subcategory.toLowerCase().includes(searchTerm)) {
+        suggestions.add(service.subcategory);
+      }
+    });
+    
+    return Array.from(suggestions).slice(0, 5); // Limit to 5 suggestions
   };
 
   // Function to get dynamic price based on size, frequency, and cook type
@@ -211,7 +345,7 @@ const StoreContextProvider = (props) => {
   };
 
   const contextValue = {
-    services_list,
+    services_list: filteredServices, // Use filtered services instead of original
     cartItem,
     setCartItem,
     addToCart,
@@ -227,7 +361,15 @@ const StoreContextProvider = (props) => {
     bookingDetails,
     updateBookingDetails,
     clearCart,
-    getServicePrice // Export the dynamic pricing function
+    getServicePrice,
+    // Search functionality
+    searchQuery,
+    searchResults,
+    isSearching,
+    performSearch,
+    handleSearchInput,
+    clearSearch,
+    getSearchSuggestions
   };
 
   return (
