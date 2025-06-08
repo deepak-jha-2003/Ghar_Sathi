@@ -2,9 +2,11 @@
 import React, { useState, useEffect } from "react";
 import "./LoginPopUp.css";
 import { assets, placeholderImages } from "../../assets/assets";
+import { useNavigate } from "react-router-dom";
 
 const LoginPopUp = ({ setShowLogin }) => {
   const [currentState, setCurrentState] = useState("Login");
+  const navigate = useNavigate();
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -19,8 +21,10 @@ const LoginPopUp = ({ setShowLogin }) => {
 
   const handleTermsClick = (e) => {
     e.preventDefault();
-    // Open terms page in new tab/window
-    window.open('/terms', '_blank');
+    // Close the login popup first
+    setShowLogin(false);
+    // Navigate to terms page using React Router
+    navigate('/terms');
   };
 
   const handleCloseLogin = () => {
