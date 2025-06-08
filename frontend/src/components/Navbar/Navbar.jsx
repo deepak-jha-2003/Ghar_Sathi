@@ -10,6 +10,16 @@ const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
   const { getServiceCount } = useContext(StoreContext);
 
+  const handleScrollToSection = (sectionId, menuName) => {
+    setMenu(menuName);
+    setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
+  };
+
   return (
     <div className="navbar">
       <Link to="/">
@@ -30,27 +40,27 @@ const Navbar = ({ setShowLogin }) => {
         >
           About Us
         </Link>
-        <a
-          href="#explore-services"
-          onClick={() => setMenu("services")}
+        <Link
+          to="/"
+          onClick={() => handleScrollToSection("explore-services", "services")}
           className={menu === "services" ? "active" : ""}
         >
           Services
-        </a>
-        <a
-          href="#how-it-works"
-          onClick={() => setMenu("how-it-works")}
+        </Link>
+        <Link
+          to="/"
+          onClick={() => handleScrollToSection("how-it-works", "how-it-works")}
           className={menu === "how-it-works" ? "active" : ""}
         >
           How It Works
-        </a>
-        <a
-          href="#footer"
-          onClick={() => setMenu("contact")}
+        </Link>
+        <Link
+          to="/"
+          onClick={() => handleScrollToSection("footer", "contact")}
           className={menu === "contact" ? "active" : ""}
         >
           Contact
-        </a>
+        </Link>
       </ul>
       <div className="navbar-right">
         <img src={placeholderImages.search_icon} alt="Search" />
