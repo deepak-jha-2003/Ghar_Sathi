@@ -8,7 +8,7 @@ const StoreContextProvider = (props) => {
   const [cartItem, setCartItem] = useState({});
   const [selectedFrequency, setSelectedFrequency] = useState({});
   const [selectedSize, setSelectedSize] = useState({});
-  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCookType, setSelectedCookType] = useState({});
   const [bookingDetails, setBookingDetails] = useState({
     date: "",
     time: "",
@@ -16,16 +16,34 @@ const StoreContextProvider = (props) => {
     specialInstructions: ""
   });
 
-  const addToCart = (itemId, frequency = null, size = null) => {
+  const addToCart = (itemId, frequency = null, size = null, cookType = null) => {
     if (!cartItem[itemId]) {
       setCartItem((prev) => ({ ...prev, [itemId]: 1 }));
       
-      // Set default frequency and size if provided
+      // Set default frequency, size, and cook type if provided
+      const service = services_list.find(s => s._id === itemId);
+      
       if (frequency) {
         setSelectedFrequency((prev) => ({ ...prev, [itemId]: frequency }));
+      } else if (service?.frequency && service.frequency.length > 0) {
+        setSelectedFrequency((prev) => ({ ...prev, [itemId]: service.frequency[0] }));
       }
+      
       if (size) {
         setSelectedSize((prev) => ({ ...prev, [itemId]: size }));
+      } else {
+        // Set default size based on service type
+        if (service?.propertySize && service.propertySize.length > 0) {
+          setSelectedSize((prev) => ({ ...prev, [itemId]: service.propertySize[0] }));
+        } else if (service?.familySize && service.familySize.length > 0) {
+          setSelectedSize((prev) => ({ ...prev, [itemId]: service.familySize[0] }));
+        }
+      }
+      
+      if (cookType) {
+        setSelectedCookType((prev) => ({ ...prev, [itemId]: cookType }));
+      } else if (service?.cookType && service.cookType.length > 0) {
+        setSelectedCookType((prev) => ({ ...prev, [itemId]: service.cookType[0] }));
       }
     }
   };
@@ -37,7 +55,7 @@ const StoreContextProvider = (props) => {
       return newCart;
     });
     
-    // Also remove frequency and size selections
+    // Also remove frequency, size, and cook type selections
     setSelectedFrequency((prev) => {
       const newFreq = { ...prev };
       delete newFreq[itemId];
@@ -49,6 +67,12 @@ const StoreContextProvider = (props) => {
       delete newSize[itemId];
       return newSize;
     });
+
+    setSelectedCookType((prev) => {
+      const newCookType = { ...prev };
+      delete newCookType[itemId];
+      return newCookType;
+    });
   };
 
   const updateServiceFrequency = (itemId, frequency) => {
@@ -59,51 +83,90 @@ const StoreContextProvider = (props) => {
     setSelectedSize((prev) => ({ ...prev, [itemId]: size }));
   };
 
-  // Function to get dynamic price based on size and frequency
+  const updateServiceCookType = (itemId, cookType) => {
+    setSelectedCookType((prev) => ({ ...prev, [itemId]: cookType }));
+  };
+
+  // Function to get dynamic price based on size, frequency, and cook type
   const getServicePrice = (service) => {
-    let basePrice = service.price;
+    // Check if service has both one-time and monthly prices
+    if (service.onetimePrice && service.monthlyPrice) {
+      const selectedFreq = selectedFrequency[service._id] || (service.frequency && service.frequency[0]);
+      
+      if (selectedFreq === "Monthly") {
+        return service.monthlyPrice;
+      } else {
+        return service.onetimePrice;
+      }
+    }
     
-    // Get selected size for this service
-    const selectedSizeForService = selectedSize[service._id] || (service.propertySize ? service.propertySize[0] : (service.familySize ? service.familySize[0] : null));
+    // For cooking services with cook types and family sizes
+    if (service.category === "cooking" && service.cookType && service.familySize) {
+      const selectedCookTypeForService = selectedCookType[service._id] || service.cookType[0];
+      const selectedFamilySizeForService = selectedSize[service._id] || service.familySize[0];
+      
+      // Create a mapping key to find the right price
+      const serviceKey = `${service.subcategory}-${selectedCookTypeForService}-${selectedFamilySizeForService}`;
+      
+      // For half-day cooking services
+      if (service.subcategory === "Half-Day Cooking") {
+        const priceMap = {
+          "Half-Day Cooking-Basic Cook-2-3 Members": 5000,
+          "Half-Day Cooking-Experienced Cook-2-3 Members": 6500,
+          "Half-Day Cooking-Premium Cook-2-3 Members": 8000,
+          "Half-Day Cooking-Basic Cook-4-5 Members": 6500,
+          "Half-Day Cooking-Experienced Cook-4-5 Members": 8000,
+          "Half-Day Cooking-Premium Cook-4-5 Members": 9500,
+          "Half-Day Cooking-Basic Cook-6-7 Members": 8000,
+          "Half-Day Cooking-Experienced Cook-6-7 Members": 10000,
+          "Half-Day Cooking-Premium Cook-6-7 Members": 12000
+        };
+        return priceMap[serviceKey] || service.price;
+      }
+      
+      // For full-day cooking services
+      if (service.subcategory === "Full-Day Cooking") {
+        const priceMap = {
+          "Full-Day Cooking-Basic Cook-2-3 Members": 9000,
+          "Full-Day Cooking-Experienced Cook-2-3 Members": 11000,
+          "Full-Day Cooking-Premium Cook-2-3 Members": 13000,
+          "Full-Day Cooking-Basic Cook-4-5 Members": 11000,
+          "Full-Day Cooking-Experienced Cook-4-5 Members": 13000,
+          "Full-Day Cooking-Premium Cook-4-5 Members": 15000,
+          "Full-Day Cooking-Basic Cook-6-7 Members": 13000,
+          "Full-Day Cooking-Experienced Cook-6-7 Members": 16000,
+          "Full-Day Cooking-Premium Cook-6-7 Members": 18500
+        };
+        return priceMap[serviceKey] || service.price;
+      }
+    }
     
-    // Calculate price based on property size
-    if (service.propertySize && selectedSizeForService) {
+    // For cleaning services with property sizes
+    if (service.propertySize && service.propertySize.length > 1) {
+      const selectedSizeForService = selectedSize[service._id] || service.propertySize[0];
       const sizeIndex = service.propertySize.indexOf(selectedSizeForService);
+      
+      // Monthly packages have specific pricing
+      if (service.subcategory === "Monthly Packages") {
+        const monthlyPrices = {
+          "1BHK": 2999,
+          "2BHK": 3599,
+          "3BHK": 4299,
+          "4BHK": 4599,
+          "5BHK": 4999
+        };
+        return monthlyPrices[selectedSizeForService] || service.price;
+      }
+      
+      // For other cleaning services, use price multipliers
       if (sizeIndex !== -1) {
-        // Parse the basePrice string if it contains multiple prices
-        if (service.basePrice && service.basePrice.includes('/')) {
-          const prices = service.basePrice.split(' / ').map(p => parseInt(p.replace(/[₹,]/g, '')));
-          if (prices[sizeIndex]) {
-            basePrice = prices[sizeIndex];
-          }
-        } else {
-          // If no basePrice with multiple options, use multipliers
-          const sizeMultipliers = [1, 1.5, 2]; // 1BHK, 2BHK, 3BHK multipliers
-          if (sizeMultipliers[sizeIndex]) {
-            basePrice = service.price * sizeMultipliers[sizeIndex];
-          }
-        }
+        const baseMultipliers = [1, 1.2, 1.5]; // Basic multipliers for different sizes
+        return Math.round(service.price * (baseMultipliers[sizeIndex] || 1));
       }
     }
     
-    // Calculate price based on family size (for cooking services)
-    if (service.familySize && selectedSizeForService) {
-      const sizeIndex = service.familySize.indexOf(selectedSizeForService);
-      if (sizeIndex !== -1 && service.basePrice && service.basePrice.includes('-')) {
-        const prices = service.basePrice.split(' - ').map(p => parseInt(p.replace(/[₹,]/g, '')));
-        if (prices[sizeIndex]) {
-          basePrice = prices[sizeIndex];
-        }
-      }
-    }
-    
-    // Apply frequency-based pricing
-    const selectedFreq = selectedFrequency[service._id];
-    if (selectedFreq === "Monthly" && service.frequency?.includes("Monthly")) {
-      basePrice = basePrice * 0.9; // 10% discount for monthly
-    }
-    
-    return Math.round(basePrice);
+    // Return the base price without any frequency-based discounts
+    return service.monthlyPrice || service.onetimePrice || service.price;
   };
 
   const getTotalCartAmount = () => {
@@ -138,35 +201,12 @@ const StoreContextProvider = (props) => {
     setCartItem({});
     setSelectedFrequency({});
     setSelectedSize({});
+    setSelectedCookType({});
     setBookingDetails({
       date: "",
       time: "",
       address: "",
       specialInstructions: ""
-    });
-  };
-
-  // New function to search services
-  const searchServices = (query) => {
-    setSearchQuery(query);
-  };
-
-  // New function to get filtered services based on category and search query
-  const getFilteredServices = (category) => {
-    return services_list.filter(item => {
-      // First filter by category
-      const categoryMatch = 
-        category === "All" ? true : 
-        category === "combo" ? item.category === "combo" :
-        item.category === category;
-      
-      // Then filter by search query if it exists
-      const searchMatch = searchQuery ? 
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        item.description.toLowerCase().includes(searchQuery.toLowerCase()) :
-        true;
-      
-      return categoryMatch && searchMatch;
     });
   };
 
@@ -180,15 +220,14 @@ const StoreContextProvider = (props) => {
     getServiceCount,
     selectedFrequency,
     selectedSize,
+    selectedCookType,
     updateServiceFrequency,
     updateServiceSize,
+    updateServiceCookType,
     bookingDetails,
     updateBookingDetails,
     clearCart,
-    getServicePrice,
-    searchQuery,
-    searchServices,
-    getFilteredServices // Add the new function to the context
+    getServicePrice // Export the dynamic pricing function
   };
 
   return (

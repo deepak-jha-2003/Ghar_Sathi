@@ -11,6 +11,7 @@ const PlaceOrder = () => {
     services_list, 
     selectedFrequency, 
     selectedSize,
+    selectedCookType,
     getServicePrice 
   } = useContext(StoreContext);
   
@@ -95,16 +96,6 @@ const PlaceOrder = () => {
     }
   };
 
-  // Function to handle time input blur (auto-close picker)
-  const handleTimeInputBlur = (e) => {
-    // Small delay to allow the picker to register the change
-    setTimeout(() => {
-      if (document.activeElement !== e.target) {
-        e.target.blur();
-      }
-    }, 100);
-  };
-
   // Function to handle time input change and auto-close
   const handleTimeInputChange = (e) => {
     handleInputChange(e);
@@ -117,20 +108,14 @@ const PlaceOrder = () => {
     }, 150);
   };
 
-  // Helper function to format time for display (shorter format)
+  // Helper function to format time for display
   const formatTimeDisplay = (time24) => {
     if (!time24) return "";
     const [hours, minutes] = time24.split(':');
     const hour12 = parseInt(hours);
     const ampm = hour12 >= 12 ? 'PM' : 'AM';
     const displayHour = hour12 % 12 || 12;
-    
-    // Only show minutes if they're not 00
-    if (minutes === "00") {
-      return `${displayHour}:${minutes} ${ampm}`;
-    } else {
-      return `${displayHour}:${minutes} ${ampm}`;
-    }
+    return `${displayHour}:${minutes} ${ampm}`;
   };
 
   // Calculate service duration
@@ -168,14 +153,7 @@ const PlaceOrder = () => {
       return;
     }
     
-    // Here you would typically send the booking details to your backend
-    console.log("Booking Details:", {
-      ...bookingDetails,
-      startTimeDisplay: formatTimeDisplay(bookingDetails.startTime),
-      endTimeDisplay: formatTimeDisplay(bookingDetails.endTime),
-      duration: getServiceDuration()
-    });
-    
+    // Clear cart and navigate
     alert("Booking confirmed! You will receive a confirmation email shortly.");
     navigate("/");
   };
@@ -291,7 +269,6 @@ const PlaceOrder = () => {
                   name="startTime"
                   value={bookingDetails.startTime}
                   onChange={handleTimeInputChange}
-                  onBlur={handleTimeInputBlur}
                   min="06:00"
                   max="22:00"
                   step="1800"
@@ -310,7 +287,6 @@ const PlaceOrder = () => {
                   name="endTime"
                   value={bookingDetails.endTime}
                   onChange={handleTimeInputChange}
-                  onBlur={handleTimeInputBlur}
                   min="07:00"
                   max="23:00"
                   step="1800"
@@ -374,6 +350,8 @@ const PlaceOrder = () => {
               const selectedSizeForService = selectedSize[service._id] || 
                 (service.propertySize ? service.propertySize[0] : 
                  service.familySize ? service.familySize[0] : null);
+              const selectedCookTypeForService = selectedCookType[service._id] || 
+                (service.cookType ? service.cookType[0] : null);
               
               return (
                 <div key={index} className="service-summary-item">
@@ -382,6 +360,7 @@ const PlaceOrder = () => {
                     <p className="service-frequency">
                       {selectedFrequency[service._id] || service.frequency?.[0]}
                       {selectedSizeForService && ` • ${selectedSizeForService}`}
+                      {selectedCookTypeForService && ` • ${selectedCookTypeForService}`}
                     </p>
                   </div>
                   <p className="service-price">₹{dynamicPrice}</p>
