@@ -20,72 +20,87 @@ const Pagination = ({
   const handlePrevPage = () => {
     if (currentPage > 1 && !isScrolling) {
       setIsScrolling(true);
-      onPageChange(currentPage - 1);
-      // Scroll after state change with proper timing
-      handleScrollToServices();
+      preventScrollDuringTransition(() => {
+        onPageChange(currentPage - 1);
+      });
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPages && !isScrolling) {
       setIsScrolling(true);
-      onPageChange(currentPage + 1);
-      // Scroll after state change with proper timing
-      handleScrollToServices();
+      preventScrollDuringTransition(() => {
+        onPageChange(currentPage + 1);
+      });
     }
   };
 
   const handlePageClick = (page) => {
     if (!isScrolling) {
       setIsScrolling(true);
-      onPageChange(page);
-      // Scroll after state change with proper timing
-      handleScrollToServices();
+      preventScrollDuringTransition(() => {
+        onPageChange(page);
+      });
     }
   };
 
-  // Improved scroll function with state management
-  const handleScrollToServices = () => {
-    // Wait for React to update the DOM with new content
-    setTimeout(() => {
-      const servicesSection = document.getElementById("services-display");
-      if (servicesSection) {
-        const isMobile = window.innerWidth <= 768;
-        
-        if (isMobile) {
-          // Stop any ongoing scroll animations
-          document.documentElement.style.scrollBehavior = 'auto';
+  // Prevent scroll during content transition
+  const preventScrollDuringTransition = (pageChangeCallback) => {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+      // Store current scroll position
+      const currentScrollY = window.pageYOffset;
+      
+      // Method 1: CSS-based approach (more reliable)
+      document.body.classList.add('pagination-transitioning');
+      document.body.style.top = `-${currentScrollY}px`;
+      
+      // Execute page change
+      pageChangeCallback();
+      
+      // Wait for React to render, then position and re-enable scroll
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const servicesSection = document.getElementById("services-display");
           
-          // Calculate target position
-          const headerHeight = 80;
-          const sectionTop = servicesSection.getBoundingClientRect().top + window.pageYOffset;
-          const targetPosition = Math.max(0, sectionTop - headerHeight);
+          // Remove transition class and reset styles
+          document.body.classList.remove('pagination-transitioning');
+          document.body.style.top = '';
           
-          // Scroll immediately to prevent any intermediate positions
-          window.scrollTo(0, targetPosition);
+          if (servicesSection) {
+            // Calculate and set final position immediately
+            const headerHeight = 80;
+            const rect = servicesSection.getBoundingClientRect();
+            const sectionTop = rect.top + window.pageYOffset;
+            const targetPosition = Math.max(0, sectionTop - headerHeight);
+            
+            // Instant positioning without any animation
+            window.scrollTo(0, targetPosition);
+          } else {
+            // Fallback: scroll to top if section not found
+            window.scrollTo(0, 0);
+          }
           
-          // Re-enable smooth scrolling for future interactions
-          setTimeout(() => {
-            document.documentElement.style.scrollBehavior = 'smooth';
-            setIsScrolling(false);
-          }, 100);
-          
-        } else {
-          // Desktop behavior
+          setIsScrolling(false);
+        }, 50); // Minimal delay for smooth transition
+      });
+      
+    } else {
+      // Desktop behavior - normal flow
+      pageChangeCallback();
+      setTimeout(() => {
+        const servicesSection = document.getElementById("services-display");
+        if (servicesSection) {
           servicesSection.scrollIntoView({ 
             behavior: 'smooth', 
             block: 'start',
             inline: 'nearest'
           });
-          
-          setTimeout(() => {
-            setIsScrolling(false);
-          }, 500);
         }
-      } else {
         setIsScrolling(false);
-      }
-    }, 200); // Longer delay to ensure content is fully rendered
+      }, 100);
+    }
   };
 
   // Generate pagination numbers with smart ellipsis
