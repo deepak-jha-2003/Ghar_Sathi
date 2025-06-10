@@ -4,6 +4,16 @@ import "./Header.css";
 import { placeholderImages } from "../../assets/assets";
 
 function Header() {
+  const handleExploreClick = () => {
+    const exploreSection = document.getElementById('explore-services');
+    if (exploreSection) {
+      exploreSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <div className="header" style={{ backgroundImage: `url(${placeholderImages.header_img})` }}>
       <div className="header-contents">
@@ -13,7 +23,7 @@ function Header() {
           Ghar Sathi brings trusted professionals right to your doorstep. 
           Experience convenience and reliability with our comprehensive home services.
         </p>
-        <button>Explore Services</button>
+        <button onClick={handleExploreClick}>Explore Services</button>
       </div>
     </div>
   );
