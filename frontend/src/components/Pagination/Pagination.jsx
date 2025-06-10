@@ -1,5 +1,5 @@
 // frontend/src/components/Pagination/Pagination.jsx - Fixed Mobile Scroll Issue
-import React from 'react';
+import React, { useState } from 'react';
 import './Pagination.css';
 
 const Pagination = ({
@@ -14,55 +14,78 @@ const Pagination = ({
   // Don't render pagination if there's only one page or no pages
   if (totalPages <= 1) return null;
 
+  // State to prevent double scrolling
+  const [isScrolling, setIsScrolling] = useState(false);
+
   const handlePrevPage = () => {
-    if (currentPage > 1) {
+    if (currentPage > 1 && !isScrolling) {
+      setIsScrolling(true);
       onPageChange(currentPage - 1);
-      // Smooth scroll to services section with better mobile handling
-      scrollToServices();
+      // Scroll after state change with proper timing
+      handleScrollToServices();
     }
   };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
+    if (currentPage < totalPages && !isScrolling) {
+      setIsScrolling(true);
       onPageChange(currentPage + 1);
-      // Smooth scroll to services section with better mobile handling
-      scrollToServices();
+      // Scroll after state change with proper timing
+      handleScrollToServices();
     }
   };
 
   const handlePageClick = (page) => {
-    onPageChange(page);
-    // Smooth scroll to services section with better mobile handling
-    scrollToServices();
+    if (!isScrolling) {
+      setIsScrolling(true);
+      onPageChange(page);
+      // Scroll after state change with proper timing
+      handleScrollToServices();
+    }
   };
 
-  // Improved scroll function for mobile
-  const scrollToServices = () => {
-    // Add a small delay to allow page change to render first
+  // Improved scroll function with state management
+  const handleScrollToServices = () => {
+    // Wait for React to update the DOM with new content
     setTimeout(() => {
       const servicesSection = document.getElementById("services-display");
       if (servicesSection) {
         const isMobile = window.innerWidth <= 768;
         
         if (isMobile) {
-          // On mobile, scroll to top of services with proper offset
-          const headerHeight = 80; // Approximate navbar height
-          const offsetTop = servicesSection.offsetTop - headerHeight;
+          // Stop any ongoing scroll animations
+          document.documentElement.style.scrollBehavior = 'auto';
           
-          window.scrollTo({
-            top: Math.max(0, offsetTop),
-            behavior: 'smooth'
-          });
+          // Calculate target position
+          const headerHeight = 80;
+          const sectionTop = servicesSection.getBoundingClientRect().top + window.pageYOffset;
+          const targetPosition = Math.max(0, sectionTop - headerHeight);
+          
+          // Scroll immediately to prevent any intermediate positions
+          window.scrollTo(0, targetPosition);
+          
+          // Re-enable smooth scrolling for future interactions
+          setTimeout(() => {
+            document.documentElement.style.scrollBehavior = 'smooth';
+            setIsScrolling(false);
+          }, 100);
+          
         } else {
-          // On desktop, use standard scroll behavior
+          // Desktop behavior
           servicesSection.scrollIntoView({ 
             behavior: 'smooth', 
             block: 'start',
             inline: 'nearest'
           });
+          
+          setTimeout(() => {
+            setIsScrolling(false);
+          }, 500);
         }
+      } else {
+        setIsScrolling(false);
       }
-    }, 100); // Small delay to ensure DOM is updated
+    }, 200); // Longer delay to ensure content is fully rendered
   };
 
   // Generate pagination numbers with smart ellipsis

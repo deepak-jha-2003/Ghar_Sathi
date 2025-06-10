@@ -63,10 +63,12 @@ const ServicesDisplay = ({ category }) => {
 
   // Enhanced pagination handler with better mobile scroll behavior
   const handlePageChange = (pageNumber) => {
+    // Prevent any automatic scrolling here
+    // The Pagination component will handle scrolling after content updates
     setCurrentPage(pageNumber);
     
-    // Don't auto-scroll here - let the Pagination component handle it
-    // This prevents double scrolling and improves mobile experience
+    // Optional: Add a small delay to ensure state updates before scroll
+    // This prevents the double-scroll issue on mobile
   };
 
   // Get category title
