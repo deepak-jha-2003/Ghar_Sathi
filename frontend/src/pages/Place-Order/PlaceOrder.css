@@ -1,5 +1,8 @@
-/* frontend/src/pages/Place-Order/PlaceOrder.css */
-.place-order {
+/* =============================================================================
+   PLACEORDER MOBILE FIXES - Replace frontend/src/pages/Place-Order/PlaceOrder.css
+   ============================================================================= */
+
+   .place-order {
     display: flex;
     align-items: start;
     justify-content: space-between;
@@ -96,6 +99,17 @@
     line-height: 1.3;
 }
 
+/* Enhanced time and date picker styling */
+input[type="time"],
+input[type="date"] {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    background: white;
+    position: relative;
+    cursor: pointer;
+}
+
 /* Hide default time and date picker icons */
 input[type="time"]::-webkit-calendar-picker-indicator,
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -116,20 +130,6 @@ input[type="date"]::-moz-focus-inner {
 /* Ensure step attribute works properly for time inputs */
 input[type="time"] {
     step: 1800; /* 30 minute steps */
-}
-
-/* Improve time picker auto-close behavior */
-input[type="time"]:focus {
-    outline: none;
-}
-
-input[type="time"]:not(:focus) {
-    pointer-events: auto;
-}
-
-/* Better transition when picker closes */
-.input-wrapper input {
-    transition: all 0.2s ease;
 }
 
 .duration-display {
@@ -171,6 +171,9 @@ input[type="time"]:not(:focus) {
     transition: all 0.3s ease;
     background: white;
     overflow: hidden;
+    min-height: 44px; /* Ensures proper touch target */
+    display: flex;
+    align-items: center;
 }
 
 .input-wrapper:hover {
@@ -190,7 +193,9 @@ input[type="time"]:not(:focus) {
     margin-bottom: 0;
     background: transparent;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 16px; /* Prevents zoom on mobile */
+    min-height: 44px;
+    height: 100%;
 }
 
 .input-wrapper input:focus {
@@ -208,14 +213,6 @@ input[type="time"]:not(:focus) {
     color: #666;
 }
 
-.service-date-field {
-    margin-bottom: 15px;
-}
-
-.service-date-field .input-wrapper {
-    margin-bottom: 0;
-}
-
 .payment-options {
     display: flex;
     flex-direction: column;
@@ -231,6 +228,7 @@ input[type="time"]:not(:focus) {
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s;
+    min-height: 44px;
 }
 
 .payment-options label:hover {
@@ -345,6 +343,7 @@ input[type="time"]:not(:focus) {
     cursor: pointer;
     margin-top: 20px;
     transition: background 0.3s;
+    min-height: 44px;
 }
 
 .confirm-booking-btn:hover {
@@ -367,7 +366,10 @@ input[type="time"]:not(:focus) {
     line-height: 1.4;
 }
 
-/* Responsive Design */
+/* =============================================================================
+   MOBILE RESPONSIVE IMPROVEMENTS
+   ============================================================================= */
+
 @media (max-width: 1050px) {
     .place-order {
         flex-direction: column;
@@ -408,17 +410,19 @@ input[type="time"]:not(:focus) {
         padding-bottom: 8px;
     }
     
+    /* Enhanced mobile input styling */
     .place-order-left input,
     .place-order-left select,
     .place-order-left textarea {
-        padding: 10px;
-        font-size: 14px;
-        margin-bottom: 12px;
+        padding: 12px 16px;
+        font-size: 16px; /* Prevents zoom */
+        margin-bottom: 20px; /* Increased spacing */
+        min-height: 44px; /* Proper touch target */
     }
     
     .multi-field {
         flex-direction: column;
-        gap: 0;
+        gap: 16px; /* Increased gap */
     }
     
     .time-field-group {
@@ -439,19 +443,25 @@ input[type="time"]:not(:focus) {
         font-size: 13px;
     }
     
+    .input-wrapper {
+        min-height: 44px;
+    }
+    
     .input-wrapper input {
-        padding: 10px 35px 10px 10px;
-        font-size: 14px;
+        padding: 12px 40px 12px 16px;
+        font-size: 16px; /* Prevents zoom */
+        min-height: 44px;
     }
     
     .input-icon {
-        right: 10px;
+        right: 16px;
         font-size: 16px;
     }
     
     .payment-options label {
-        padding: 12px;
-        font-size: 14px;
+        padding: 12px 16px;
+        font-size: 16px; /* Prevents zoom */
+        min-height: 44px;
     }
     
     .order-summary {
@@ -499,8 +509,9 @@ input[type="time"]:not(:focus) {
     }
     
     .confirm-booking-btn {
-        padding: 12px;
-        font-size: 15px;
+        padding: 12px 18px;
+        font-size: 16px; /* Consistent with other inputs */
+        min-height: 44px;
     }
     
     .booking-notes {
@@ -531,21 +542,29 @@ input[type="time"]:not(:focus) {
         font-size: 16px;
     }
     
+    /* Better mobile form field sizing */
     .place-order-left input,
     .place-order-left select,
     .place-order-left textarea {
-        padding: 8px;
-        font-size: 13px;
+        padding: 12px 16px;
+        font-size: 16px; /* Prevents zoom */
+        margin-bottom: 20px;
+        min-height: 44px;
+    }
+    
+    .input-wrapper {
+        min-height: 44px;
     }
     
     .input-wrapper input {
-        padding: 8px 30px 8px 8px;
-        font-size: 13px;
+        padding: 12px 40px 12px 16px;
+        font-size: 16px; /* Prevents zoom */
+        min-height: 44px;
     }
     
     .input-icon {
-        right: 8px;
-        font-size: 14px;
+        right: 16px;
+        font-size: 16px;
     }
     
     .duration-display {
@@ -557,8 +576,9 @@ input[type="time"]:not(:focus) {
     }
     
     .payment-options label {
-        padding: 10px;
-        font-size: 13px;
+        padding: 12px 16px;
+        font-size: 16px; /* Prevents zoom */
+        min-height: 44px;
     }
     
     .order-summary {
@@ -590,8 +610,9 @@ input[type="time"]:not(:focus) {
     }
     
     .confirm-booking-btn {
-        padding: 10px;
-        font-size: 14px;
+        padding: 12px 16px;
+        font-size: 16px; /* Prevents zoom */
+        min-height: 44px;
     }
     
     .booking-notes {
@@ -603,6 +624,44 @@ input[type="time"]:not(:focus) {
     }
 }
 
+/* =============================================================================
+   iOS and Mobile-Specific Optimizations
+   ============================================================================= */
+
+/* Fix iOS time picker behavior */
+@media (max-width: 768px) {
+    input[type="time"],
+    input[type="date"] {
+        /* Force 16px to prevent zoom */
+        font-size: 16px !important;
+        
+        /* Better mobile appearance */
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+        background: white;
+        
+        /* Ensure proper height */
+        min-height: 44px;
+        height: 44px;
+        
+        /* Improved padding */
+        padding: 0 40px 0 16px;
+    }
+    
+    /* Better time picker auto-close behavior */
+    input[type="time"]:focus,
+    input[type="date"]:focus {
+        outline: none;
+    }
+    
+    /* Prevent iOS momentum scrolling issues during picker interaction */
+    .input-wrapper {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}
+
+/* Enhanced for very small screens */
 @media (max-width: 360px) {
     .place-order {
         padding: 0 8px;
@@ -626,19 +685,5 @@ input[type="time"]:not(:focus) {
     
     .order-summary h2 {
         font-size: 18px;
-    }
-}
-
-/* Better mobile time picker handling */
-@media (max-width: 768px) {
-    input[type="time"],
-    input[type="date"] {
-        font-size: 16px; /* Prevents zoom on iOS */
-    }
-    
-    /* Mobile specific time picker behavior */
-    input[type="time"] {
-        -webkit-appearance: none;
-        -moz-appearance: textfield;
     }
 }

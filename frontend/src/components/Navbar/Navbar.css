@@ -1,15 +1,19 @@
-/* Updated Navbar.css with enhanced search functionality and mobile overflow fix */
+/* =============================================================================
+   NAVBAR MOBILE FIXES - Replace frontend/src/components/Navbar/Navbar.css
+   ============================================================================= */
 
-.navbar{
+   .navbar{
     padding: 20px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .navbar .logo {
- width: 100px; 
- height: 80px;
+    width: 100px; 
+    height: 80px;
 }
+
 .navbar-menu{
     display: flex;
     list-style: none;
@@ -17,11 +21,13 @@
     color: #49557e;
     font-size: 18px;
 }
+
 .navbar-right{
     display: flex;
     align-items: center;
     gap: 40px;
 }
+
 .navbar button{
     background: transparent;
     font-size: 16px;
@@ -32,20 +38,25 @@
     cursor: pointer;
     transition: 0.3s;
 }
+
 .navbar button:hover{
     background-color: #FF6B6B;
     color: white;
 }
+
 .navbar .active{
-   padding-bottom: 2px;
-   border-bottom: 2px solid #FF6B6B; 
+    padding-bottom: 2px;
+    border-bottom: 2px solid #FF6B6B; 
 }
+
 .navbar li{
     cursor: pointer;
 }
+
 .navbar-search-icon {
     position: relative;
 }
+
 .navbar-search-icon .dot{
     position: absolute;
     min-width: 10px;
@@ -56,153 +67,159 @@
     right: -8px;
 }
 
-/* Enhanced Search Styles */
+/* =============================================================================
+   ENHANCED SEARCH FUNCTIONALITY
+   ============================================================================= */
+
 .search-container {
-  display: flex;
-  align-items: center;
-  position: relative;
+    display: flex;
+    align-items: center;
+    position: relative;
 }
 
 .search-icon {
-  cursor: pointer;
-  transition: transform 0.3s;
-  width: 24px;
-  height: 24px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    width: 24px;
+    height: 24px;
 }
 
 .search-icon:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .search-form-container {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  z-index: 1000;
-  margin-top: 10px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  min-width: 350px;
-  border: 1px solid #eee;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    margin-top: 10px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    min-width: 350px;
+    border: 1px solid #eee;
 }
 
 .search-form {
-  display: flex;
-  align-items: center;
-  position: relative;
-  border-bottom: 1px solid #f0f0f0;
-  background: white;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+    background: white;
 }
 
 .search-input {
-  flex: 1;
-  padding: 15px 20px;
-  border: none;
-  font-size: 15px;
-  outline: none;
-  background: transparent;
-  width: 250px;
-  color: #333;
+    flex: 1;
+    padding: 15px 20px;
+    border: none;
+    font-size: 16px; /* Prevents zoom on mobile */
+    outline: none;
+    background: transparent;
+    width: 250px;
+    color: #333;
 }
 
 .search-input::placeholder {
-  color: #999;
-  font-size: 14px;
+    color: #999;
+    font-size: 14px;
 }
 
 .clear-search-btn {
-  background: none;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  color: #999;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  border-radius: 50%;
-  margin-right: 5px;
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    color: #999;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    border-radius: 50%;
+    margin-right: 5px;
 }
 
 .clear-search-btn:hover {
-  color: #666;
-  background: #f5f5f5;
+    color: #666;
+    background: #f5f5f5;
 }
 
 .search-button {
-  background-color: #FF6B6B;
-  color: white;
-  border: none;
-  padding: 15px 20px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background-color 0.3s;
-  min-width: 90px;
+    background-color: #FF6B6B;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    min-width: 90px;
 }
 
 .search-button:hover {
-  background-color: #ff5252;
+    background-color: #ff5252;
 }
 
 .search-suggestions {
-  max-height: 250px;
-  overflow-y: auto;
-  background: white;
+    max-height: 250px;
+    overflow-y: auto;
+    background: white;
 }
 
 .suggestion-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 15px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  border-bottom: 1px solid #f5f5f5;
-  font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 14px;
 }
 
 .suggestion-item:hover {
-  background-color: #f8f9fa;
+    background-color: #f8f9fa;
 }
 
 .suggestion-item:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .suggestion-icon {
-  color: #666;
-  font-size: 12px;
+    color: #666;
+    font-size: 12px;
 }
 
 /* Loading state */
 .search-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 /* Custom scrollbar for suggestions */
 .search-suggestions::-webkit-scrollbar {
-  width: 4px;
+    width: 4px;
 }
 
 .search-suggestions::-webkit-scrollbar-track {
-  background: #f1f1f1;
+    background: #f1f1f1;
 }
 
 .search-suggestions::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 2px;
+    background: #c1c1c1;
+    border-radius: 2px;
 }
 
 .search-suggestions::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+    background: #a8a8a8;
 }
 
-/* Mobile Menu Styles */
+/* =============================================================================
+   ENHANCED MOBILE MENU WITH IMPROVED OVERFLOW HANDLING
+   ============================================================================= */
+
 .mobile-menu-toggle {
     display: none;
     flex-direction: column;
@@ -252,18 +269,29 @@
     width: 80%;
     max-width: 300px;
     height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height */
     padding: 20px;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     
-    /* Enable scrolling with hidden scrollbar */
+    /* Enhanced scrolling with hidden scrollbar */
     overflow-y: auto;
     overflow-x: hidden;
-    
-    /* Hide scrollbar for webkit browsers */
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */
+    
+    /* Flexbox layout for better content management */
+    display: flex;
+    flex-direction: column;
+    
+    /* Safe area support for modern devices */
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
 }
 
 /* Hide scrollbar for webkit browsers */
@@ -294,6 +322,11 @@
     cursor: pointer;
     padding: 5px;
     color: #666;
+    min-height: 44px; /* Proper touch target */
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .mobile-menu-items {
@@ -316,6 +349,9 @@
     font-weight: 500;
     border-bottom: 1px solid #f5f5f5;
     transition: color 0.3s;
+    min-height: 44px; /* Proper touch target */
+    display: flex;
+    align-items: center;
 }
 
 .mobile-menu-items a:hover,
@@ -341,8 +377,9 @@
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 16px; /* Prevents zoom on mobile */
     outline: none;
+    min-height: 44px; /* Proper touch target */
 }
 
 .mobile-search-input:focus {
@@ -360,6 +397,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.3s;
+    min-height: 44px; /* Proper touch target */
 }
 
 .mobile-search-button:hover {
@@ -385,6 +423,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
+    min-height: 44px; /* Proper touch target */
 }
 
 .mobile-login-button:hover {
@@ -392,7 +431,10 @@
     color: white;
 }
 
-/* Responsive Design */
+/* =============================================================================
+   RESPONSIVE DESIGN IMPROVEMENTS
+   ============================================================================= */
+
 @media (max-width:1050px) {
     .navbar .logo{
         width: 110px;
@@ -419,6 +461,7 @@
     .search-input {
         width: 200px;
         padding: 12px 18px;
+        font-size: 16px; /* Prevents zoom */
     }
 }
 
@@ -449,6 +492,7 @@
     .search-input {
         width: 180px;
         padding: 12px 16px;
+        font-size: 16px; /* Prevents zoom */
     }
 }
 
@@ -472,24 +516,25 @@
         display: flex;
     }
     
-    /* Better mobile positioning */
+    /* Enhanced mobile search positioning */
     .search-form-container {
-        position: absolute;
-        top: 100%;
-        right: -15px;
-        left: auto;
-        transform: none;
-        min-width: 300px;
-        max-width: 350px;
+        position: fixed;
+        top: 70px;
+        left: 15px;
+        right: 15px;
+        max-width: calc(100vw - 30px);
+        min-width: auto;
+        z-index: 1001;
         background: white;
         border: 1px solid #ddd;
         margin-top: 12px;
+        border-radius: 12px;
     }
     
     .search-input {
         width: 100%;
         padding: 14px 18px;
-        font-size: 16px;
+        font-size: 16px; /* Prevents zoom */
     }
     
     .search-button {
@@ -506,38 +551,6 @@
         padding: 14px 18px;
         font-size: 14px;
     }
-
-    /* Enhanced mobile menu with better viewport handling */
-    .mobile-menu-content {
-        /* Use flex layout for better content management */
-        display: flex;
-        flex-direction: column;
-        
-        /* Ensure proper spacing on different devices */
-        min-height: 100%;
-        min-height: 100dvh; /* Dynamic viewport height */
-        
-        /* Safe area support for modern devices */
-        padding-top: max(20px, env(safe-area-inset-top));
-        padding-bottom: max(20px, env(safe-area-inset-bottom));
-        padding-left: max(20px, env(safe-area-inset-left));
-        padding-right: max(20px, env(safe-area-inset-right));
-    }
-    
-    /* Ensure the content area can scroll when needed */
-    .mobile-menu-items,
-    .mobile-search-section,
-    .mobile-login-section {
-        flex-shrink: 0;
-    }
-    
-    /* Add a spacer at the bottom to ensure all content is accessible */
-    .mobile-login-section::after {
-        content: '';
-        display: block;
-        height: 20px;
-        flex-shrink: 0;
-    }
 }
 
 @media (max-width: 500px) {
@@ -553,13 +566,14 @@
     }
     
     .search-form-container {
-        right: -30px;
-        min-width: 280px;
-        max-width: 320px;
+        top: 65px;
+        left: 10px;
+        right: 10px;
+        max-width: calc(100vw - 20px);
     }
     
     .search-input {
-        font-size: 16px;
+        font-size: 16px; /* Prevents zoom */
         padding: 14px 16px;
     }
     
@@ -579,6 +593,7 @@
         font-size: 13px;
     }
     
+    /* Enhanced mobile menu for smaller screens */
     .mobile-menu-content {
         width: 85%;
         
@@ -611,6 +626,10 @@
         padding: 10px 0;
     }
 }
+
+/* =============================================================================
+   ENHANCED MOBILE MENU VIEWPORT HANDLING
+   ============================================================================= */
 
 /* Additional support for very short screens */
 @media (max-height: 600px) and (max-width: 750px) {
@@ -674,5 +693,46 @@
     .mobile-menu-items a {
         padding: 6px 0;
         font-size: 14px;
+    }
+}
+
+/* =============================================================================
+   ENHANCED ACCESSIBILITY AND INTERACTION
+   ============================================================================= */
+
+/* Better focus management */
+.mobile-menu-items a:focus,
+.mobile-search-input:focus,
+.mobile-search-button:focus,
+.mobile-login-button:focus {
+    outline: 2px solid #FF6B6B;
+    outline-offset: 2px;
+}
+
+/* Prevent body scroll when mobile menu is open */
+body.mobile-menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* Enhanced touch targets for mobile */
+@media (max-width: 768px) {
+    .search-icon,
+    .mobile-menu-toggle,
+    .mobile-menu-close {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Ensure all interactive elements have proper touch targets */
+    .navbar-search-icon,
+    .clear-search-btn,
+    .search-button {
+        min-height: 44px;
     }
 }
