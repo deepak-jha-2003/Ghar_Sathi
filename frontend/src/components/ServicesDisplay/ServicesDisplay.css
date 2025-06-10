@@ -1,6 +1,8 @@
-/* frontend/src/components/ServicesDisplay/ServicesDisplay.css */
+/* frontend/src/components/ServicesDisplay/ServicesDisplay.css - Mobile Optimized */
 .services-display {
     margin-top: 30px;
+    /* Add scroll margin to prevent overcorrection on mobile */
+    scroll-margin-top: 20px;
 }
 
 .services-header {
@@ -130,7 +132,15 @@
     margin-top: 30px;
     gap: 30px;
     row-gap: 40px;
-    min-height: 400px; /* Prevent layout shift during pagination */
+    /* Prevent layout shift during pagination */
+    min-height: 400px;
+    /* Add transition for smooth content changes */
+    transition: min-height 0.3s ease;
+}
+
+/* Ensure consistent height when services are loaded */
+.services-display-list:has(.service-item) {
+    min-height: auto;
 }
 
 .no-services {
@@ -140,6 +150,7 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     margin-top: 20px;
+    grid-column: 1 / -1; /* Span all columns */
 }
 
 .no-services p {
@@ -172,11 +183,37 @@
 .services-display-list .service-item:nth-child(6) { animation-delay: 0.6s; }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+    .services-display {
+        margin-top: 25px;
+        scroll-margin-top: 15px;
+    }
+    
     .services-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
+    }
+    
+    .services-display-list {
+        gap: 25px;
+        row-gap: 35px;
+        margin-top: 25px;
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .services-display {
+        margin-top: 20px;
+        scroll-margin-top: 10px;
+    }
+    
+    .services-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 15px;
     }
     
     .services-display h2 {
@@ -197,15 +234,20 @@
     .combo-description {
         font-size: 14px;
         padding: 8px 12px;
+        margin-bottom: 15px;
     }
     
     .services-display-list {
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
         gap: 20px;
+        row-gap: 25px;
+        margin-top: 20px;
+        min-height: 300px;
     }
     
     .no-search-results {
         padding: 30px 15px;
+        margin: 15px 0;
     }
     
     .no-search-results h3 {
@@ -214,6 +256,7 @@
     
     .search-suggestions-list {
         gap: 8px;
+        margin: 15px 0;
     }
     
     .suggestion-chip {
@@ -224,11 +267,228 @@
     .search-tip {
         font-size: 13px;
         padding: 12px;
+        margin-top: 15px;
+    }
+    
+    .search-loading {
+        padding: 30px 15px;
+    }
+    
+    .search-loading p {
+        font-size: 15px;
+    }
+    
+    .no-services {
+        padding: 25px 15px;
+        margin-top: 15px;
+    }
+    
+    .no-services p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    .services-display {
+        scroll-margin-top: 5px;
+    }
+    
+    .services-display-list {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 15px;
+        row-gap: 20px;
+        margin-top: 15px;
+        min-height: 250px;
+    }
+    
+    .services-header {
+        margin-bottom: 12px;
+    }
+    
+    .combo-description {
+        margin-bottom: 12px;
     }
 }
 
 @media (max-width: 480px) {
+    .services-display {
+        margin-top: 15px;
+    }
+    
+    .services-display h2 {
+        font-size: 18px;
+    }
+    
+    .services-header {
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    
+    .clear-search-button {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+    
+    .combo-description {
+        font-size: 13px;
+        padding: 6px 10px;
+        margin-bottom: 10px;
+    }
+    
     .services-display-list {
         grid-template-columns: 1fr;
+        gap: 15px;
+        row-gap: 20px;
+        margin-top: 12px;
+        min-height: 200px;
+    }
+    
+    .no-search-results {
+        padding: 25px 12px;
+        margin: 12px 0;
+    }
+    
+    .no-search-results h3 {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    
+    .no-search-results p {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+    
+    .search-suggestions-list {
+        gap: 6px;
+        margin: 12px 0;
+    }
+    
+    .suggestion-chip {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+    
+    .search-tip {
+        font-size: 12px;
+        padding: 10px;
+        margin-top: 12px;
+    }
+    
+    .search-loading {
+        padding: 25px 12px;
+    }
+    
+    .search-loading p {
+        font-size: 14px;
+    }
+    
+    .no-services {
+        padding: 20px 12px;
+        margin-top: 12px;
+    }
+    
+    .no-services p {
+        font-size: 15px;
+    }
+}
+
+/* Additional mobile optimizations for scroll behavior */
+@media (max-width: 768px) {
+    /* Ensure smooth scrolling on mobile */
+    .services-display {
+        /* Reduce top margin on mobile to prevent over-scrolling */
+        margin-top: 15px;
+        
+        /* Better scroll positioning */
+        scroll-margin-top: 0px;
+        
+        /* Add some padding to prevent content from touching screen edges */
+        padding: 0 5px;
+    }
+    
+    /* Optimize grid for mobile */
+    .services-display-list {
+        /* Reduce gaps on mobile to show more content */
+        gap: 15px;
+        row-gap: 20px;
+        
+        /* Reduce min-height to prevent excessive white space */
+        min-height: 200px;
+        
+        /* Ensure grid items don't get cut off */
+        padding-bottom: 10px;
+    }
+    
+    /* Better mobile pagination positioning */
+    .services-display + .pagination-wrapper {
+        /* Reduce top margin to bring pagination closer */
+        margin-top: 20px;
+    }
+}
+
+/* Handle very small screens */
+@media (max-width: 360px) {
+    .services-display {
+        margin-top: 10px;
+        padding: 0 3px;
+    }
+    
+    .services-display h2 {
+        font-size: 16px;
+    }
+    
+    .services-header {
+        gap: 6px;
+        margin-bottom: 8px;
+    }
+    
+    .services-display-list {
+        margin-top: 10px;
+        gap: 12px;
+        row-gap: 15px;
+        min-height: 180px;
+        padding-bottom: 5px;
+    }
+    
+    .combo-description {
+        font-size: 12px;
+        padding: 5px 8px;
+        margin-bottom: 8px;
+    }
+}
+
+/* Prevent layout shifts during loading */
+.services-display.loading .services-display-list {
+    min-height: 300px;
+    position: relative;
+}
+
+.services-display.loading .services-display-list::after {
+    content: "Loading...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #666;
+    font-size: 16px;
+}
+
+/* Smooth transitions for better UX */
+.services-display-list,
+.no-search-results,
+.search-loading {
+    transition: all 0.3s ease;
+}
+
+/* Improve accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .services-display-list .service-item {
+        animation: none;
+    }
+    
+    .services-display-list,
+    .no-search-results,
+    .search-loading {
+        transition: none;
     }
 }

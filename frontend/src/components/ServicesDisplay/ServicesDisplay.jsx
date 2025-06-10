@@ -1,4 +1,4 @@
-// frontend/src/components/ServicesDisplay/ServicesDisplay.jsx
+// frontend/src/components/ServicesDisplay/ServicesDisplay.jsx - Mobile Scroll Fix
 import React, { useContext, useEffect, useState } from "react";
 import "./ServicesDisplay.css";
 import { StoreContext } from "../../Context/StoreContext";
@@ -61,14 +61,12 @@ const ServicesDisplay = ({ category }) => {
   const indexOfFirstService = indexOfLastService - servicesPerPage;
   const currentServices = allServicesToDisplay.slice(indexOfFirstService, indexOfLastService);
 
-  // Pagination handler
+  // Enhanced pagination handler with better mobile scroll behavior
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    // Scroll to top of services section
-    const servicesSection = document.getElementById("services-display");
-    if (servicesSection) {
-      servicesSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    
+    // Don't auto-scroll here - let the Pagination component handle it
+    // This prevents double scrolling and improves mobile experience
   };
 
   // Get category title
@@ -169,7 +167,8 @@ const ServicesDisplay = ({ category }) => {
         </div>
       )}
       
-      <div className="services-display-list">
+      {/* Services Grid - Add minimum height to prevent layout shifts */}
+      <div className="services-display-list" style={{ minHeight: currentServices.length > 0 ? 'auto' : '400px' }}>
         {currentServices.map((item, index) => (
           <ServiceItem
             key={`${item._id}-${currentPage}`} // Include page in key for proper re-rendering
@@ -210,7 +209,7 @@ const ServicesDisplay = ({ category }) => {
         </div>
       )}
 
-      {/* Pagination Component */}
+      {/* Pagination Component - Only show if there are items and not searching */}
       {allServicesToDisplay.length > 0 && !isSearching && (
         <Pagination
           currentPage={currentPage}

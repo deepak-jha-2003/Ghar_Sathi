@@ -1,4 +1,4 @@
-// frontend/src/components/Pagination/Pagination.jsx
+// frontend/src/components/Pagination/Pagination.jsx - Fixed Mobile Scroll Issue
 import React from 'react';
 import './Pagination.css';
 
@@ -17,13 +17,52 @@ const Pagination = ({
   const handlePrevPage = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
+      // Smooth scroll to services section with better mobile handling
+      scrollToServices();
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       onPageChange(currentPage + 1);
+      // Smooth scroll to services section with better mobile handling
+      scrollToServices();
     }
+  };
+
+  const handlePageClick = (page) => {
+    onPageChange(page);
+    // Smooth scroll to services section with better mobile handling
+    scrollToServices();
+  };
+
+  // Improved scroll function for mobile
+  const scrollToServices = () => {
+    // Add a small delay to allow page change to render first
+    setTimeout(() => {
+      const servicesSection = document.getElementById("services-display");
+      if (servicesSection) {
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+          // On mobile, scroll to top of services with proper offset
+          const headerHeight = 80; // Approximate navbar height
+          const offsetTop = servicesSection.offsetTop - headerHeight;
+          
+          window.scrollTo({
+            top: Math.max(0, offsetTop),
+            behavior: 'smooth'
+          });
+        } else {
+          // On desktop, use standard scroll behavior
+          servicesSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start',
+            inline: 'nearest'
+          });
+        }
+      }
+    }, 100); // Small delay to ensure DOM is updated
   };
 
   // Generate pagination numbers with smart ellipsis
@@ -96,7 +135,7 @@ const Pagination = ({
                 ) : (
                   <button
                     className={`pagination-number ${currentPage === page ? 'active' : ''}`}
-                    onClick={() => onPageChange(page)}
+                    onClick={() => handlePageClick(page)}
                     aria-label={`Go to page ${page}`}
                     aria-current={currentPage === page ? 'page' : undefined}
                   >
