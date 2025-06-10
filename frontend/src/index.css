@@ -1,214 +1,30 @@
-/* =============================================================================
-   CRITICAL RESPONSIVE DESIGN FIXES FOR GHAR SATHI
-   Apply these fixes to frontend/src/index.css for global improvements
-   ============================================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: outfit;
+  scroll-behavior: smooth;
+}
 
-   /* Reset and base styles with responsive improvements */
-   * {
-     padding: 0;
-     margin: 0;
-     box-sizing: border-box;
-     font-family: outfit;
-     scroll-behavior: smooth;
-   }
-   
-   /* Improved body styles */
-   body {
-     min-height: 100vh;
-     /* Prevent horizontal scrolling */
-     overflow-x: hidden;
-     /* Better text rendering */
-     -webkit-font-smoothing: antialiased;
-     -moz-osx-font-smoothing: grayscale;
-   }
-   
-   /* Link styles */
-   a {
-     text-decoration: none;
-     color: inherit;
-   }
-   
-   /* App container with responsive improvements */
-   .app {
-     width: min(95%, 1200px);
-     margin: 0 auto;
-     padding: 0 clamp(10px, 3vw, 20px);
-   }
-   
-   /* Prevent iOS zoom on input focus */
-   input[type="text"],
-   input[type="email"],
-   input[type="tel"],
-   input[type="password"],
-   input[type="time"],
-   input[type="date"],
-   select,
-   textarea {
-     font-size: 16px !important; /* Prevents zoom on iOS Safari */
-     -webkit-appearance: none;
-     border-radius: 0;
-   }
-   
-   /* Better responsive typography */
-   html {
-     font-size: clamp(14px, 2.5vw, 16px);
-   }
-   
-   /* Responsive typography scale */
-   h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); }
-   h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
-   h3 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
-   p  { font-size: clamp(0.9rem, 2vw, 1rem); }
-   
-   /* Better focus indicators for accessibility */
-   *:focus-visible {
-     outline: 2px solid #FF6B6B;
-     outline-offset: 2px;
-     border-radius: 4px;
-   }
-   
-   /* Skip link for keyboard navigation */
-   .skip-link {
-     position: absolute;
-     top: -40px;
-     left: 6px;
-     background: #FF6B6B;
-     color: white;
-     padding: 8px;
-     text-decoration: none;
-     border-radius: 4px;
-     z-index: 9999;
-   }
-   
-   .skip-link:focus {
-     top: 6px;
-   }
-   
-   /* Responsive utility classes */
-   .container {
-     width: 100%;
-     max-width: 1200px;
-     margin: 0 auto;
-     padding: 0 clamp(15px, 4vw, 40px);
-   }
-   
-   .text-responsive {
-     font-size: clamp(0.875rem, 2.5vw, 1rem);
-     line-height: 1.6;
-   }
-   
-   .heading-responsive {
-     font-size: clamp(1.5rem, 4vw, 2.5rem);
-     line-height: 1.2;
-   }
-   
-   /* Hide elements responsively */
-   .mobile-only {
-     display: none;
-   }
-   
-   .desktop-only {
-     display: block;
-   }
-   
-   @media (max-width: 768px) {
-     .mobile-only {
-       display: block;
-     }
-     
-     .desktop-only {
-       display: none;
-     }
-   }
-   
-   /* Better button sizing */
-   button,
-   .btn {
-     min-height: 44px;
-     padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px);
-     font-size: clamp(14px, 3vw, 16px);
-     border-radius: 6px;
-     transition: all 0.2s ease;
-   }
-   
-   /* Prevent layout shift during loading */
-   .services-display-list,
-   .cart-items,
-   .features-grid {
-     contain: layout style;
-   }
-   
-   /* Optimize animations for reduced motion preference */
-   @media (prefers-reduced-motion: reduce) {
-     *,
-     *::before,
-     *::after {
-       animation-duration: 0.01ms !important;
-       animation-iteration-count: 1 !important;
-       transition-duration: 0.01ms !important;
-     }
-   }
-   
-   /* GPU acceleration for smooth scrolling */
-   .mobile-menu-content,
-   .services-display-list {
-     transform: translateZ(0);
-     backface-visibility: hidden;
-     perspective: 1000px;
-   }
-   
-   /* Animation keyframes */
-   @keyframes fadein {
-     0% {
-       opacity: 0;
-     }
-     100% {
-       opacity: 1;
-     }
-   }
-   
-   /* Safe area support for modern devices */
-   @supports (padding: max(0px)) {
-     .safe-area-padding {
-       padding-left: max(15px, env(safe-area-inset-left));
-       padding-right: max(15px, env(safe-area-inset-right));
-       padding-top: max(15px, env(safe-area-inset-top));
-       padding-bottom: max(15px, env(safe-area-inset-bottom));
-     }
-   }
-   
-   /* Improved mobile breakpoints */
-   @media (max-width: 480px) {
-     .app {
-       width: min(98%, 100%);
-       padding: 0 clamp(8px, 2vw, 15px);
-     }
-     
-     /* Smaller text on very small screens */
-     html {
-       font-size: clamp(13px, 2.2vw, 14px);
-     }
-   }
-   
-   @media (max-width: 360px) {
-     .app {
-       padding: 0 clamp(5px, 1.5vw, 10px);
-     }
-   }
-   
-   /* Better tablet styles */
-   @media (min-width: 769px) and (max-width: 1024px) {
-     .app {
-       width: min(92%, 1200px);
-       padding: 0 clamp(15px, 3vw, 25px);
-     }
-   }
-   
-   /* Large screen optimizations */
-   @media (min-width: 1200px) {
-     .app {
-       width: min(85%, 1200px);
-     }
-   }
+body{
+  min-height: 100vh;
+}
+a{
+  text-decoration: none;
+  color: inherit;
+}
+.app{
+  width: 80%;
+  margin: auto;
+}
+
+@keyframes fadein {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
