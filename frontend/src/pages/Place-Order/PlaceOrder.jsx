@@ -1,8 +1,9 @@
-// frontend/src/pages/Place-Order/PlaceOrder.jsx
+// frontend/src/pages/Place-Order/PlaceOrder.jsx - Updated with Razorpay Integration
 import React, { useContext, useState } from "react";
 import "./PlaceOrder.css";
 import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
+import PaymentGateway from "../../components/PaymentGateway/PaymentGateway";
 
 const PlaceOrder = () => {
   const { 
@@ -12,7 +13,8 @@ const PlaceOrder = () => {
     selectedFrequency, 
     selectedSize,
     selectedCookType,
-    getServicePrice 
+    getServicePrice,
+    clearCart
   } = useContext(StoreContext);
   
   const navigate = useNavigate();
@@ -32,6 +34,9 @@ const PlaceOrder = () => {
     specialInstructions: "",
     paymentMethod: "online"
   });
+
+  const [paymentStatus, setPaymentStatus] = useState(null);
+  const [showPayment, setShowPayment] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -152,14 +157,104 @@ const PlaceOrder = () => {
       alert("End time must be after start time");
       return;
     }
-    
-    // Clear cart and navigate
-    alert("Booking confirmed! You will receive a confirmation email shortly.");
+
+    // Check if online payment is selected
+    if (bookingDetails.paymentMethod === "online") {
+      setShowPayment(true);
+    } else {
+      // Handle cash payment
+      handleCashPayment();
+    }
+  };
+
+  const handleCashPayment = () => {
+    // For cash payment, just confirm the booking
+    alert("Booking confirmed! You can pay cash after the service is completed.");
+    clearCart();
     navigate("/");
+  };
+
+  const handlePaymentSuccess = (paymentData) => {
+    setPaymentStatus({
+      success: true,
+      message: "Payment successful! Your booking has been confirmed.",
+      paymentId: paymentData.payment_id,
+      orderId: paymentData.order_id
+    });
+    
+    // Clear cart and redirect after a delay
+    setTimeout(() => {
+      clearCart();
+      navigate("/");
+    }, 3000);
+  };
+
+  const handlePaymentFailure = (error) => {
+    setPaymentStatus({
+      success: false,
+      message: error.message || "Payment failed. Please try again.",
+    });
+  };
+
+  // Calculate total amount with GST
+  const subtotal = getTotalCartAmount();
+  const gst = subtotal * 0.18;
+  const totalAmount = subtotal + gst;
+
+  // Prepare customer info for payment
+  const customerInfo = {
+    name: `${bookingDetails.firstName} ${bookingDetails.lastName}`,
+    email: bookingDetails.email,
+    phone: bookingDetails.phone
+  };
+
+  // Prepare order details for payment
+  const orderDetails = {
+    services: getSelectedServices().map(service => ({
+      id: service._id,
+      name: service.name,
+      price: getServicePrice ? getServicePrice(service) : service.price,
+      frequency: selectedFrequency[service._id],
+      size: selectedSize[service._id],
+      cookType: selectedCookType[service._id]
+    })),
+    bookingDetails,
+    subtotal,
+    gst,
+    totalAmount
   };
 
   // Get minimum date (today)
   const today = new Date().toISOString().split('T')[0];
+
+  // Show payment success/failure status
+  if (paymentStatus) {
+    return (
+      <div className="place-order">
+        <div className="place-order-left">
+          <div className={`payment-status ${paymentStatus.success ? 'success' : 'error'}`}>
+            <h2>{paymentStatus.success ? '✅ Payment Successful!' : '❌ Payment Failed'}</h2>
+            <p>{paymentStatus.message}</p>
+            {paymentStatus.success && (
+              <div className="payment-details">
+                <p><strong>Payment ID:</strong> {paymentStatus.paymentId}</p>
+                <p><strong>Order ID:</strong> {paymentStatus.orderId}</p>
+                <p>You will receive a confirmation email shortly.</p>
+              </div>
+            )}
+            {!paymentStatus.success && (
+              <button 
+                className="retry-payment-btn"
+                onClick={() => setPaymentStatus(null)}
+              >
+                Try Again
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form className="place-order" onSubmit={handleBookingSubmit}>
@@ -337,6 +432,20 @@ const PlaceOrder = () => {
             </label>
           </div>
         </div>
+
+        {/* Show payment gateway for online payments */}
+        {showPayment && bookingDetails.paymentMethod === "online" && (
+          <div className="section">
+            <h3>Complete Payment</h3>
+            <PaymentGateway
+              amount={totalAmount}
+              orderDetails={orderDetails}
+              customerInfo={customerInfo}
+              onSuccess={handlePaymentSuccess}
+              onFailure={handlePaymentFailure}
+            />
+          </div>
+        )}
       </div>
 
       <div className="place-order-right">
@@ -372,23 +481,25 @@ const PlaceOrder = () => {
           <div className="price-summary">
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>₹{getTotalCartAmount()}</p>
+              <p>₹{subtotal}</p>
             </div>
             <hr />
             <div className="cart-total-details">
               <p>GST (18%)</p>
-              <p>₹{(getTotalCartAmount() * 0.18).toFixed(2)}</p>
+              <p>₹{gst.toFixed(2)}</p>
             </div>
             <hr />
             <div className="cart-total-details total">
               <b>Total Amount</b>
-              <b>₹{(getTotalCartAmount() + (getTotalCartAmount() * 0.18)).toFixed(2)}</b>
+              <b>₹{totalAmount.toFixed(2)}</b>
             </div>
           </div>
 
-          <button type="submit" className="confirm-booking-btn">
-            CONFIRM BOOKING
-          </button>
+          {!showPayment && (
+            <button type="submit" className="confirm-booking-btn">
+              {bookingDetails.paymentMethod === "online" ? "PROCEED TO PAYMENT" : "CONFIRM BOOKING"}
+            </button>
+          )}
 
           <div className="booking-notes">
             <p>✓ Free cancellation up to 24 hours before service</p>
