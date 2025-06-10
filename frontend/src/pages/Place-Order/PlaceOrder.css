@@ -17,6 +17,7 @@
     font-weight: 600;
     margin-bottom: 30px;
     color: #262626;
+    line-height: 1.2;
 }
 
 .section {
@@ -33,6 +34,7 @@
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 2px solid #FF6B6B;
+    line-height: 1.3;
 }
 
 .place-order-left input,
@@ -45,6 +47,7 @@
     border-radius: 5px;
     font-size: 15px;
     transition: border-color 0.3s;
+    box-sizing: border-box;
 }
 
 .place-order-left input:focus,
@@ -56,6 +59,7 @@
 
 .place-order-left textarea {
     resize: vertical;
+    min-height: 80px;
 }
 
 .multi-field {
@@ -89,6 +93,7 @@
     color: #888;
     margin-bottom: 15px;
     display: block;
+    line-height: 1.3;
 }
 
 /* Hide default time and date picker icons */
@@ -127,20 +132,6 @@ input[type="time"]:not(:focus) {
     transition: all 0.2s ease;
 }
 
-/* Better mobile time picker handling */
-@media (max-width: 768px) {
-    input[type="time"],
-    input[type="date"] {
-        font-size: 16px; /* Prevents zoom on iOS */
-    }
-    
-    /* Mobile specific time picker behavior */
-    input[type="time"] {
-        -webkit-appearance: none;
-        -moz-appearance: textfield;
-    }
-}
-
 .duration-display {
     background: #f0f8ff;
     padding: 15px;
@@ -153,6 +144,7 @@ input[type="time"]:not(:focus) {
     margin: 5px 0;
     font-size: 14px;
     color: #555;
+    line-height: 1.4;
 }
 
 .duration-display strong {
@@ -274,6 +266,7 @@ input[type="time"]:not(:focus) {
     font-size: 24px;
     color: #262626;
     margin-bottom: 20px;
+    line-height: 1.3;
 }
 
 .selected-services {
@@ -284,6 +277,7 @@ input[type="time"]:not(:focus) {
     font-size: 18px;
     color: #555;
     margin-bottom: 15px;
+    line-height: 1.3;
 }
 
 .service-summary-item {
@@ -298,16 +292,19 @@ input[type="time"]:not(:focus) {
     font-weight: 600;
     color: #262626;
     margin-bottom: 3px;
+    line-height: 1.3;
 }
 
 .service-frequency {
     font-size: 14px;
     color: #666;
+    line-height: 1.3;
 }
 
 .service-price {
     font-weight: 600;
     color: #FF6B6B;
+    white-space: nowrap;
 }
 
 .price-summary {
@@ -319,12 +316,14 @@ input[type="time"]:not(:focus) {
     justify-content: space-between;
     margin: 10px 0;
     color: #555;
+    line-height: 1.4;
 }
 
 .cart-total-details.total {
     color: #262626;
     font-size: 18px;
     margin-top: 10px;
+    font-weight: 600;
 }
 
 .order-summary hr {
@@ -365,11 +364,15 @@ input[type="time"]:not(:focus) {
     color: #555;
     display: flex;
     align-items: center;
+    line-height: 1.4;
 }
 
+/* Responsive Design */
 @media (max-width: 1050px) {
     .place-order {
         flex-direction: column;
+        gap: 30px;
+        margin-top: 30px;
     }
     
     .place-order-left,
@@ -383,8 +386,34 @@ input[type="time"]:not(:focus) {
 }
 
 @media (max-width: 768px) {
+    .place-order {
+        margin-top: 20px;
+        padding: 0 15px;
+    }
+    
+    .place-order-left .title {
+        font-size: 26px;
+        margin-bottom: 25px;
+    }
+    
     .section {
         padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+    }
+    
+    .section h3 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+    }
+    
+    .place-order-left input,
+    .place-order-left select,
+    .place-order-left textarea {
+        padding: 10px;
+        font-size: 14px;
+        margin-bottom: 12px;
     }
     
     .multi-field {
@@ -394,5 +423,222 @@ input[type="time"]:not(:focus) {
     
     .time-field-group {
         margin-bottom: 15px;
+    }
+    
+    .time-field-group small {
+        font-size: 11px;
+        margin-bottom: 12px;
+    }
+    
+    .duration-display {
+        padding: 12px;
+        margin: 12px 0;
+    }
+    
+    .duration-display p {
+        font-size: 13px;
+    }
+    
+    .input-wrapper input {
+        padding: 10px 35px 10px 10px;
+        font-size: 14px;
+    }
+    
+    .input-icon {
+        right: 10px;
+        font-size: 16px;
+    }
+    
+    .payment-options label {
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .order-summary {
+        padding: 20px;
+        border-radius: 8px;
+    }
+    
+    .order-summary h2 {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+    
+    .selected-services h3 {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    
+    .service-summary-item {
+        padding: 8px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .service-name {
+        font-size: 15px;
+    }
+    
+    .service-frequency {
+        font-size: 13px;
+    }
+    
+    .service-price {
+        font-size: 16px;
+        align-self: flex-end;
+    }
+    
+    .cart-total-details {
+        font-size: 14px;
+        margin: 8px 0;
+    }
+    
+    .cart-total-details.total {
+        font-size: 16px;
+    }
+    
+    .confirm-booking-btn {
+        padding: 12px;
+        font-size: 15px;
+    }
+    
+    .booking-notes {
+        padding: 12px;
+    }
+    
+    .booking-notes p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .place-order {
+        padding: 0 10px;
+    }
+    
+    .place-order-left .title {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    
+    .section {
+        padding: 15px;
+        border-radius: 6px;
+    }
+    
+    .section h3 {
+        font-size: 16px;
+    }
+    
+    .place-order-left input,
+    .place-order-left select,
+    .place-order-left textarea {
+        padding: 8px;
+        font-size: 13px;
+    }
+    
+    .input-wrapper input {
+        padding: 8px 30px 8px 8px;
+        font-size: 13px;
+    }
+    
+    .input-icon {
+        right: 8px;
+        font-size: 14px;
+    }
+    
+    .duration-display {
+        padding: 10px;
+    }
+    
+    .duration-display p {
+        font-size: 12px;
+    }
+    
+    .payment-options label {
+        padding: 10px;
+        font-size: 13px;
+    }
+    
+    .order-summary {
+        padding: 15px;
+    }
+    
+    .order-summary h2 {
+        font-size: 20px;
+    }
+    
+    .service-name {
+        font-size: 14px;
+    }
+    
+    .service-frequency {
+        font-size: 12px;
+    }
+    
+    .service-price {
+        font-size: 15px;
+    }
+    
+    .cart-total-details {
+        font-size: 13px;
+    }
+    
+    .cart-total-details.total {
+        font-size: 15px;
+    }
+    
+    .confirm-booking-btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .booking-notes {
+        padding: 10px;
+    }
+    
+    .booking-notes p {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    .place-order {
+        padding: 0 8px;
+    }
+    
+    .place-order-left .title {
+        font-size: 20px;
+    }
+    
+    .section {
+        padding: 12px;
+    }
+    
+    .section h3 {
+        font-size: 15px;
+    }
+    
+    .order-summary {
+        padding: 12px;
+    }
+    
+    .order-summary h2 {
+        font-size: 18px;
+    }
+}
+
+/* Better mobile time picker handling */
+@media (max-width: 768px) {
+    input[type="time"],
+    input[type="date"] {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Mobile specific time picker behavior */
+    input[type="time"] {
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
     }
 }

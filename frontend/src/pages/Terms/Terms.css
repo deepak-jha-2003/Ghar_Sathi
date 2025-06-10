@@ -21,6 +21,7 @@
     color: #262626;
     margin-bottom: 10px;
     font-weight: 700;
+    line-height: 1.2;
 }
 
 .terms-header .effective-date {
@@ -41,6 +42,7 @@
     margin: 0;
     font-size: 16px;
     color: #555;
+    line-height: 1.7;
 }
 
 .terms-section {
@@ -54,6 +56,7 @@
     padding-bottom: 8px;
     border-bottom: 2px solid #eee;
     font-weight: 600;
+    line-height: 1.3;
 }
 
 .terms-section h3 {
@@ -61,12 +64,14 @@
     color: #333;
     margin: 20px 0 10px 0;
     font-weight: 600;
+    line-height: 1.3;
 }
 
 .terms-section p {
     margin-bottom: 15px;
     color: #555;
     font-size: 15px;
+    line-height: 1.7;
 }
 
 .terms-section ul {
@@ -78,6 +83,7 @@
     margin-bottom: 8px;
     color: #555;
     font-size: 15px;
+    line-height: 1.6;
 }
 
 .highlight-box {
@@ -92,6 +98,7 @@
     margin: 0;
     color: #e65100;
     font-weight: 500;
+    line-height: 1.6;
 }
 
 .contact-section {
@@ -107,6 +114,8 @@
     margin-bottom: 20px;
     border: none;
     padding: 0;
+    font-size: 24px;
+    line-height: 1.3;
 }
 
 .contact-info {
@@ -125,16 +134,19 @@
     padding: 15px 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    white-space: nowrap;
 }
 
 .contact-icon {
     font-size: 20px;
     color: #FF6B6B;
+    flex-shrink: 0;
 }
 
 .contact-item span {
     color: #333;
     font-weight: 500;
+    word-break: break-word;
 }
 
 .back-to-home {
@@ -160,22 +172,249 @@
     box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
 }
 
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .terms-container {
+        margin: 30px 20px;
+        padding: 30px;
+    }
+    
+    .contact-info {
+        gap: 25px;
+    }
+}
+
 @media (max-width: 768px) {
     .terms-container {
-        margin: 20px;
-        padding: 25px;
+        margin: 20px 15px;
+        padding: 25px 20px;
     }
     
     .terms-header h1 {
         font-size: 28px;
+        margin-bottom: 8px;
+    }
+    
+    .terms-header .effective-date {
+        font-size: 14px;
+    }
+    
+    .terms-header {
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+    }
+    
+    .terms-intro {
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .terms-intro p {
+        font-size: 15px;
+    }
+    
+    .terms-section {
+        margin-bottom: 30px;
+    }
+    
+    .terms-section h2 {
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
+    
+    .terms-section h3 {
+        font-size: 18px;
+        margin: 18px 0 8px 0;
+    }
+    
+    .terms-section p {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+    
+    .terms-section ul {
+        padding-left: 20px;
+        margin: 12px 0;
+    }
+    
+    .terms-section li {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    .highlight-box {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .contact-section {
+        padding: 25px 20px;
+        margin-top: 30px;
+    }
+    
+    .contact-section h2 {
+        font-size: 22px;
+        margin-bottom: 15px;
     }
     
     .contact-info {
         flex-direction: column;
         gap: 15px;
+        margin-top: 15px;
     }
     
     .contact-item {
         justify-content: center;
+        padding: 12px 15px;
+        max-width: 100%;
+    }
+    
+    .contact-item span {
+        font-size: 14px;
+    }
+    
+    .back-to-home {
+        margin-top: 30px;
+    }
+    
+    .back-to-home button {
+        padding: 12px 25px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .terms-container {
+        margin: 15px 10px;
+        padding: 20px 15px;
+        border-radius: 12px;
+    }
+    
+    .terms-header h1 {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+    
+    .terms-header .effective-date {
+        font-size: 13px;
+    }
+    
+    .terms-intro {
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .terms-intro p {
+        font-size: 14px;
+    }
+    
+    .terms-section h2 {
+        font-size: 20px;
+    }
+    
+    .terms-section h3 {
+        font-size: 17px;
+    }
+    
+    .terms-section p,
+    .terms-section li {
+        font-size: 13px;
+    }
+    
+    .terms-section ul {
+        padding-left: 18px;
+    }
+    
+    .highlight-box {
+        padding: 12px;
+        border-radius: 6px;
+    }
+    
+    .highlight-box p {
+        font-size: 13px;
+    }
+    
+    .contact-section {
+        padding: 20px 15px;
+        border-radius: 8px;
+    }
+    
+    .contact-section h2 {
+        font-size: 20px;
+    }
+    
+    .contact-item {
+        padding: 10px 12px;
+        border-radius: 6px;
+    }
+    
+    .contact-icon {
+        font-size: 18px;
+    }
+    
+    .contact-item span {
+        font-size: 13px;
+    }
+    
+    .back-to-home button {
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 25px;
+    }
+}
+
+@media (max-width: 360px) {
+    .terms-container {
+        margin: 10px 8px;
+        padding: 18px 12px;
+    }
+    
+    .terms-header h1 {
+        font-size: 22px;
+    }
+    
+    .terms-intro {
+        padding: 12px;
+    }
+    
+    .terms-section h2 {
+        font-size: 18px;
+    }
+    
+    .terms-section h3 {
+        font-size: 16px;
+    }
+    
+    .contact-section {
+        padding: 18px 12px;
+    }
+    
+    .contact-item {
+        padding: 8px 10px;
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+    
+    .contact-item span {
+        font-size: 12px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .terms-container {
+        box-shadow: none;
+        margin: 0;
+        padding: 20px;
+    }
+    
+    .back-to-home {
+        display: none;
+    }
+    
+    .contact-section {
+        background: white;
+        border: 1px solid #ddd;
     }
 }
