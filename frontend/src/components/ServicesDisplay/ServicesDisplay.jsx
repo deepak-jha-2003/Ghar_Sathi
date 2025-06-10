@@ -1,8 +1,9 @@
 // frontend/src/components/ServicesDisplay/ServicesDisplay.jsx
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./ServicesDisplay.css";
 import { StoreContext } from "../../Context/StoreContext";
 import ServiceItem from "../ServiceItem/ServiceItem";
+import Pagination from "../Pagination/Pagination";
 
 const ServicesDisplay = ({ category }) => {
   const { 
@@ -13,6 +14,15 @@ const ServicesDisplay = ({ category }) => {
     clearSearch,
     performSearch 
   } = useContext(StoreContext);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [servicesPerPage] = useState(12); // Number of services per page
+
+  // Reset to first page when category or search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [category, searchQuery]);
 
   // Handle search suggestions clicks
   useEffect(() => {
@@ -43,7 +53,23 @@ const ServicesDisplay = ({ category }) => {
     return services_list.filter(item => item.category === category);
   };
 
-  const servicesToDisplay = getServicesToDisplay();
+  const allServicesToDisplay = getServicesToDisplay();
+
+  // Calculate pagination
+  const totalPages = Math.ceil(allServicesToDisplay.length / servicesPerPage);
+  const indexOfLastService = currentPage * servicesPerPage;
+  const indexOfFirstService = indexOfLastService - servicesPerPage;
+  const currentServices = allServicesToDisplay.slice(indexOfFirstService, indexOfLastService);
+
+  // Pagination handler
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    // Scroll to top of services section
+    const servicesSection = document.getElementById("services-display");
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   // Get category title
   const getCategoryTitle = () => {
@@ -53,7 +79,7 @@ const ServicesDisplay = ({ category }) => {
         <span>
           Search Results for "{searchQuery}"
           <span className="search-results">
-            ({servicesToDisplay.length} {servicesToDisplay.length === 1 ? 'service' : 'services'} found)
+            ({allServicesToDisplay.length} {allServicesToDisplay.length === 1 ? 'service' : 'services'} found)
           </span>
         </span>
       );
@@ -125,7 +151,7 @@ const ServicesDisplay = ({ category }) => {
       )}
       
       {/* Search suggestions for no results */}
-      {searchQuery && searchQuery.trim() !== "" && servicesToDisplay.length === 0 && !isSearching && (
+      {searchQuery && searchQuery.trim() !== "" && allServicesToDisplay.length === 0 && !isSearching && (
         <div className="no-search-results">
           <h3>No services found for "{searchQuery}"</h3>
           <p>Try searching for:</p>
@@ -144,9 +170,9 @@ const ServicesDisplay = ({ category }) => {
       )}
       
       <div className="services-display-list">
-        {servicesToDisplay.map((item, index) => (
+        {currentServices.map((item, index) => (
           <ServiceItem
-            key={index}
+            key={`${item._id}-${currentPage}`} // Include page in key for proper re-rendering
             id={item._id}
             name={item.name}
             description={item.description}
@@ -178,10 +204,23 @@ const ServicesDisplay = ({ category }) => {
       </div>
       
       {/* No services message for category filter */}
-      {!searchQuery && servicesToDisplay.length === 0 && (
+      {!searchQuery && allServicesToDisplay.length === 0 && (
         <div className="no-services">
           <p>No services available in this category.</p>
         </div>
+      )}
+
+      {/* Pagination Component */}
+      {allServicesToDisplay.length > 0 && !isSearching && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          totalItems={allServicesToDisplay.length}
+          itemsPerPage={servicesPerPage}
+          showInfo={true}
+          className={isSearching ? 'loading' : ''}
+        />
       )}
     </div>
   );

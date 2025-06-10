@@ -130,6 +130,7 @@
     margin-top: 30px;
     gap: 30px;
     row-gap: 40px;
+    min-height: 400px; /* Prevent layout shift during pagination */
 }
 
 .no-services {
@@ -146,7 +147,7 @@
     margin: 0;
 }
 
-/* Animation for search results */
+/* Animation for service items */
 .services-display-list .service-item {
     animation: fadeInUp 0.3s ease-out;
 }
@@ -170,6 +171,7 @@
 .services-display-list .service-item:nth-child(5) { animation-delay: 0.5s; }
 .services-display-list .service-item:nth-child(6) { animation-delay: 0.6s; }
 
+/* Responsive Design */
 @media (max-width: 768px) {
     .services-header {
         flex-direction: column;
@@ -222,5 +224,11 @@
     .search-tip {
         font-size: 13px;
         padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .services-display-list {
+        grid-template-columns: 1fr;
     }
 }
