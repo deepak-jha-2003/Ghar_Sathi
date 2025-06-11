@@ -1,5 +1,5 @@
-// frontend/src/pages/Place-Order/PlaceOrder.jsx - Updated with Razorpay Integration
-import React, { useContext, useState } from "react";
+// frontend/src/pages/Place-Order/PlaceOrder.jsx - Updated with smooth scroll to payment
+import React, { useContext, useState, useRef, useEffect } from "react";
 import "./PlaceOrder.css";
 import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,9 @@ const PlaceOrder = () => {
   
   const navigate = useNavigate();
   
+  // Create ref for payment section
+  const paymentSectionRef = useRef(null);
+  
   const [bookingDetails, setBookingDetails] = useState({
     firstName: "",
     lastName: "",
@@ -37,6 +40,20 @@ const PlaceOrder = () => {
 
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
+
+  // Smooth scroll to payment section when it becomes visible
+  useEffect(() => {
+    if (showPayment && paymentSectionRef.current) {
+      // Small delay to ensure the payment section is rendered
+      setTimeout(() => {
+        paymentSectionRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        });
+      }, 100);
+    }
+  }, [showPayment]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -161,6 +178,7 @@ const PlaceOrder = () => {
     // Check if online payment is selected
     if (bookingDetails.paymentMethod === "online") {
       setShowPayment(true);
+      // Scroll will happen automatically via useEffect
     } else {
       // Handle cash payment
       handleCashPayment();
@@ -433,9 +451,9 @@ const PlaceOrder = () => {
           </div>
         </div>
 
-        {/* Show payment gateway for online payments */}
+        {/* Show payment gateway for online payments with ref for scrolling */}
         {showPayment && bookingDetails.paymentMethod === "online" && (
-          <div className="section">
+          <div className="section" ref={paymentSectionRef}>
             <h3>Complete Payment</h3>
             <PaymentGateway
               amount={totalAmount}
