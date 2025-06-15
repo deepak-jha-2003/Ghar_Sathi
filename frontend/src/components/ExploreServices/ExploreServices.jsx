@@ -1,9 +1,28 @@
 // frontend/src/components/ExploreServices/ExploreServices.jsx
-import React from "react";
+import React, { useState } from "react";
 import "./ExploreServices.css";
 import { service_categories } from "../../assets/assets";
+import ServiceModal from "../ServiceModal/ServiceModal";
 
 const ExploreServices = ({ category, setCategory }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const handleCategoryClick = (categoryId) => {
+    if (categoryId === "All") {
+      setCategory("All");
+      return;
+    }
+    
+    setSelectedCategory(categoryId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCategory(null);
+  };
+
   return (
     <div className="explore-services" id="explore-services">
       <h1>Explore Our Services</h1>
@@ -16,11 +35,7 @@ const ExploreServices = ({ category, setCategory }) => {
         {service_categories.map((item, index) => {
           return (
             <div
-              onClick={() =>
-                setCategory((prev) =>
-                  prev === item.category_id ? "All" : item.category_id
-                )
-              }
+              onClick={() => handleCategoryClick(item.category_id)}
               key={index}
               className="explore-services-list-item"
             >
@@ -35,6 +50,12 @@ const ExploreServices = ({ category, setCategory }) => {
         })}
       </div>
       <hr />
+
+      <ServiceModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        category={selectedCategory}
+      />
     </div>
   );
 };

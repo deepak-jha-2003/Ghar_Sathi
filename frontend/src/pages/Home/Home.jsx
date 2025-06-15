@@ -14,7 +14,7 @@ const Home = () => {
     <div>
       <Header />
       <ExploreServices category={category} setCategory={setCategory} />
-      <ServicesDisplay category={category} />
+      {category === "All" && <ServicesDisplay category={category} />}
       <HowItWorks />
       <AppDownload />
     </div>
