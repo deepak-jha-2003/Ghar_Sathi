@@ -2,6 +2,7 @@
 import React from "react";
 import "./Footer.css";
 import { assets, placeholderImages } from "../../assets/assets";
+import { Link } from "react-router-dom";
 import Logo from "../Logo/Logo";
 
 const Footer = () => {
@@ -34,10 +35,22 @@ const Footer = () => {
           </ul>
         </div>
         <div className="footer-content-right">
+          <h2>COMPANY</h2>
+          <ul>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/terms">Terms & Conditions</Link></li>
+            <li>Privacy Policy</li>
+            <li>Career</li>
+            <li>Support</li>
+            <li>Blog</li>
+          </ul>
+        </div>
+        <div className="footer-content-contact">
           <h2>GET IN TOUCH</h2>
           <ul>
-            <li>📞 +91 9631967939</li>
-            <li>✉️ support@gharsathi.com</li>
+            <li>📞 +91-8980567795</li>
+            <li>✉️ gharsathii@gmail.com</li>
+            <li>💬 +91 96622 71481</li>
             <li>📍 Surat, Gujarat</li>
             <li>⏰ Available 24/7</li>
           </ul>
@@ -45,7 +58,13 @@ const Footer = () => {
       </div>
       <hr />
       <p className="footer-copyright">
-        Copyright 2024 © Ghar Sathi - All Rights Reserved
+        Copyright 2024 © Ghar Sathi - All Rights Reserved | 
+        <Link to="/about" style={{color: '#d9d9d9', textDecoration: 'underline', marginLeft: '5px'}}>
+          About Us
+        </Link> | 
+        <Link to="/terms" style={{color: '#d9d9d9', textDecoration: 'underline', marginLeft: '5px'}}>
+          Terms & Conditions
+        </Link>
       </p>
     </div>
   );

@@ -1,18 +1,51 @@
 // frontend/src/components/LoginPopUP/LoginPopUp.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LoginPopUp.css";
 import { assets, placeholderImages } from "../../assets/assets";
+import { useNavigate } from "react-router-dom";
 
 const LoginPopUp = ({ setShowLogin }) => {
   const [currentState, setCurrentState] = useState("Login");
+  const navigate = useNavigate();
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    // Add overflow hidden to body when modal opens
+    document.body.style.overflow = 'hidden';
+    
+    // Cleanup function to restore scroll when modal closes
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  const handleTermsClick = (e) => {
+    e.preventDefault();
+    // Close the login popup first
+    setShowLogin(false);
+    // Navigate to terms page using React Router
+    navigate('/terms');
+  };
+
+  const handleCloseLogin = () => {
+    document.body.style.overflow = 'unset';
+    setShowLogin(false);
+  };
+
+  const handleBackdropClick = (e) => {
+    // Close modal if user clicks on backdrop (outside the modal content)
+    if (e.target === e.currentTarget) {
+      handleCloseLogin();
+    }
+  };
 
   return (
-    <div className="login-popup">
-      <form className="login-popup-container">
+    <div className="login-popup" onClick={handleBackdropClick}>
+      <form className="login-popup-container" onClick={(e) => e.stopPropagation()}>
         <div className="login-popup-title">
           <h2>{currentState}</h2>
           <img
-            onClick={() => setShowLogin(false)}
+            onClick={handleCloseLogin}
             src={placeholderImages.cross_icon}
             alt="Close"
           />
@@ -38,13 +71,18 @@ const LoginPopUp = ({ setShowLogin }) => {
           )}
         </div>
         
-        <button>
+        <button type="submit">
           {currentState === "Sign Up" ? "Create Account" : "Login"}
         </button>
         
         <div className="login-popup-condition">
           <input type="checkbox" required />
-          <p>By continuing, I agree to the terms of use & privacy policy.</p>
+          <p>
+            By continuing, I agree to the{" "}
+            <span onClick={handleTermsClick} className="terms-link">
+              terms of use & privacy policy
+            </span>.
+          </p>
         </div>
         
         {currentState === "Login" ? (

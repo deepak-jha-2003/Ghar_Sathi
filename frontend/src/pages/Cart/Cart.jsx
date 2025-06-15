@@ -13,22 +13,19 @@ const Cart = () => {
     getTotalCartAmount,
     selectedFrequency,
     selectedSize,
+    selectedCookType,
     updateServiceFrequency,
-    updateServiceSize 
+    updateServiceSize,
+    updateServiceCookType,
+    getServicePrice
   } = useContext(StoreContext);
 
   const navigate = useNavigate();
+  const totalAmount = getTotalCartAmount();
 
-  const getServicePrice = (service) => {
-    let price = service.price;
-    
-    // Apply frequency-based pricing
-    if (selectedFrequency[service._id] === "Monthly" && 
-        service.frequency?.includes("Monthly")) {
-      price = price * 0.9; // 10% discount for monthly
-    }
-    
-    return price;
+  // Get display price for service
+  const getDisplayPrice = (service) => {
+    return getServicePrice ? getServicePrice(service) : (service.onetimePrice || service.monthlyPrice || service.price);
   };
 
   return (
@@ -41,7 +38,14 @@ const Cart = () => {
       <div className="cart-items">
         {services_list.map((item, index) => {
           if (cartItem[item._id] > 0) {
-            const servicePrice = getServicePrice(item);
+            const servicePrice = getDisplayPrice(item);
+            const selectedFreq = selectedFrequency[item._id] || (item.frequency && item.frequency[0]);
+            const selectedSizeForService = selectedSize[item._id] || 
+              (item.propertySize && item.propertySize[0]) ||
+              (item.familySize && item.familySize[0]);
+            const selectedCookTypeForService = selectedCookType[item._id] || 
+              (item.cookType && item.cookType[0]);
+
             return (
               <div key={index} className="cart-item-card">
                 <div className="cart-item-image">
@@ -53,11 +57,12 @@ const Cart = () => {
                   <p className="cart-item-desc">{item.description}</p>
                   
                   <div className="cart-item-options">
+                    {/* Frequency selector */}
                     {item.frequency && item.frequency.length > 1 && (
                       <div className="option-group">
                         <label>Frequency:</label>
                         <select 
-                          value={selectedFrequency[item._id] || item.frequency[0]}
+                          value={selectedFreq}
                           onChange={(e) => updateServiceFrequency(item._id, e.target.value)}
                         >
                           {item.frequency.map((freq, idx) => (
@@ -67,9 +72,10 @@ const Cart = () => {
                       </div>
                     )}
                     
+                    {/* Property size selector */}
                     {item.propertySize && item.propertySize.length > 1 && (
                       <div className="option-group">
-                        <label>Size:</label>
+                        <label>Property Size:</label>
                         <select 
                           value={selectedSize[item._id] || item.propertySize[0]}
                           onChange={(e) => updateServiceSize(item._id, e.target.value)}
@@ -80,14 +86,41 @@ const Cart = () => {
                         </select>
                       </div>
                     )}
+                    
+                    {/* Family size selector */}
+                    {item.familySize && item.familySize.length > 1 && (
+                      <div className="option-group">
+                        <label>Family Size:</label>
+                        <select 
+                          value={selectedSize[item._id] || item.familySize[0]}
+                          onChange={(e) => updateServiceSize(item._id, e.target.value)}
+                        >
+                          {item.familySize.map((size, idx) => (
+                            <option key={idx} value={size}>{size}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                    
+                    {/* Cook type selector */}
+                    {item.cookType && item.cookType.length > 1 && (
+                      <div className="option-group">
+                        <label>Cook Type:</label>
+                        <select 
+                          value={selectedCookType[item._id] || item.cookType[0]}
+                          onChange={(e) => updateServiceCookType(item._id, e.target.value)}
+                        >
+                          {item.cookType.map((type, idx) => (
+                            <option key={idx} value={type}>{type}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
                   </div>
                 </div>
                 
                 <div className="cart-item-price">
                   <p className="price">₹{servicePrice}</p>
-                  {selectedFrequency[item._id] === "Monthly" && 
-                    <span className="discount-tag">10% off</span>
-                  }
                   <button 
                     className="remove-btn"
                     onClick={() => removeFromCart(item._id)}
@@ -130,19 +163,19 @@ const Cart = () => {
             <div className="price-details">
               <div className="cart-total-details">
                 <p>Subtotal</p>
-                <p>₹{getTotalCartAmount()}</p>
+                <p>₹{totalAmount}</p>
               </div>
               <hr />
               
               <div className="cart-total-details">
                 <p>GST (18%)</p>
-                <p>₹{getTotalCartAmount() === 0 ? 0 : (getTotalCartAmount() * 0.18).toFixed(2)}</p>
+                <p>₹{totalAmount === 0 ? 0 : (totalAmount * 0.18).toFixed(2)}</p>
               </div>
               <hr />
               
               <div className="cart-total-details total">
                 <b>Total Amount</b>
-                <b>₹{getTotalCartAmount() === 0 ? 0 : (getTotalCartAmount() + (getTotalCartAmount() * 0.18)).toFixed(2)}</b>
+                <b>₹{totalAmount === 0 ? 0 : (totalAmount + (totalAmount * 0.18)).toFixed(2)}</b>
               </div>
             </div>
             
